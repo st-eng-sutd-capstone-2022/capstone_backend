@@ -1,0 +1,7 @@
+{
+  "name": "capstone-backend",
+  "workspaces": [
+    "rest_api",
+    "mqtt"
+  ]
+}
