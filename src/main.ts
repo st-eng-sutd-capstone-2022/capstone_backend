@@ -1,10 +1,12 @@
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { MQTTAppModule } from './mqttApp.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -24,5 +26,20 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   await app.listen(3000, '0.0.0.0');
+
+  // ---------------------------
+  // mqtt shits
+
+  const mqttApp = await NestFactory.createMicroservice<MicroserviceOptions>(
+    MQTTAppModule,
+    {
+      transport: Transport.MQTT,
+      options: {
+        url: 'mqtt://localhost:6379',
+      },
+    },
+  );
+
+  mqttApp.listen();
 }
 bootstrap();
