@@ -45,3 +45,15 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
+
+## Development
+
+The server listens to port 3000
+
+Read https://docs.nestjs.com/controllers to build some fundamentals on how to work with nestjs.
+
+## Documentation
+
+Swagger is used to document the REST API. It can be accessed locally [here](http://localhost:3000/api)
+
+Read [here](https://docs.nestjs.com/openapi/introduction) on how to build the Swagger according to OpenApi specs.
