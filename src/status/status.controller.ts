@@ -35,12 +35,13 @@ export class StatusController {
 
   @EventPattern('capstones36')
   hello(@Payload() data: unknown, @Ctx() context: MqttContext): void {
-    this.client.emit('capstones37', 'kanina');
-    console.log(data, context.getTopic());
+    console.log(`ping: ${Date.now() - data['time']}ms`);
+    // console.log(data, context.getTopic());
+    // this.client.emit('capstones37', 'Consumed ACK');
   }
 
-  @EventPattern('capstones37')
-  helloa(@Payload() data: unknown, @Ctx() context: MqttContext): void {
-    console.log(data, context.getTopic());
-  }
+  // @EventPattern('capstones37')
+  // helloa(@Payload() data: unknown, @Ctx() context: MqttContext): void {
+  //   console.log(data, context.getTopic(), '\n');
+  // }
 }
