@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+
+import { ConfigModule } from './config/config.module';
 import { StatusModule } from './status/status.module';
 
 @Module({
-  imports: [StatusModule],
+  imports: [ConfigModule, StatusModule],
 })
 export class MQTTAppModule {}
