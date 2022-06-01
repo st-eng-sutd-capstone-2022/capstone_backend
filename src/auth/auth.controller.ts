@@ -5,8 +5,8 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { CreateUserDTO } from './auth.dto';
 
+import { CreateUserDTO } from './auth.dto';
 import { AuthService } from './auth.service';
 
 @ApiHeader({
