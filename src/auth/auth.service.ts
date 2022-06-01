@@ -8,7 +8,7 @@ import { Auth, AuthDocument } from './auth.schema';
 export class AuthService {
   constructor(@InjectModel(Auth.name) private authModel: Model<AuthDocument>) {}
 
-  createUser(email: string, password: string) {
+  createUser({ email, password }) {
     return this.authModel.create({
       email,
       password,

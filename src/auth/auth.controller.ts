@@ -1,5 +1,11 @@
-import { Controller, Post } from '@nestjs/common';
-import { ApiHeader, ApiOkResponse } from '@nestjs/swagger';
+import { Body, Controller, Post } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiHeader,
+  ApiOkResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CreateUserDTO } from './auth.dto';
 
 import { AuthService } from './auth.service';
 
@@ -7,6 +13,7 @@ import { AuthService } from './auth.service';
   name: 'Auth',
   description: 'Handles all the authentication stuff',
 })
+@ApiTags('Auth')
 @Controller()
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -29,12 +36,12 @@ export class AuthController {
     return this.authService.logout();
   }
 
-  @ApiOkResponse({
+  @ApiCreatedResponse({
     description: 'User is created successfully',
   })
   @Post('create-user')
-  createUser(req) {
+  async createUser(@Body() req: CreateUserDTO) {
     console.log(req);
-    return this.authService.createUser('hello', 'bye');
+    this.authService.createUser(req);
   }
 }

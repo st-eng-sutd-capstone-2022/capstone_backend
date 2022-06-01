@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions } from '@nestjs/microservices';
@@ -16,6 +17,14 @@ async function bootstrap() {
     AppModule,
     // Turn off logger during prod
     new FastifyAdapter({ logger: true }),
+  );
+
+  // Add validation pipeline to all API
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
   );
 
   // Swagger stuff
