@@ -16,7 +16,7 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     // Turn off logger during prod
-    new FastifyAdapter({ logger: true }),
+    new FastifyAdapter({ logger: false }),
   );
 
   // Add validation pipeline to all API
