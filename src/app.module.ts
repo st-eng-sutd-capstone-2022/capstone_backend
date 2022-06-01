@@ -12,6 +12,21 @@ const REQUIRED_ENVS = {
   MQTT_BROKER_URL: 'MQTT_BROKER_URL',
 };
 
+const envValidation = (vars: Record<string, any>): Record<string, any> => {
+  console.log('Env variables\n------------');
+  if (
+    Object.keys(REQUIRED_ENVS).some((env) => {
+      const val = vars[env];
+      console.log(`${env}: ${val}`);
+      return typeof val === 'undefined';
+    })
+  )
+    throw Error('Env variables are not valid');
+  console.log('------------\n');
+
+  return vars;
+};
+
 @Module({
   providers: [
     {
@@ -22,20 +37,7 @@ const REQUIRED_ENVS = {
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validate: (vars) => {
-        console.log('Env variables\n------------');
-        if (
-          Object.keys(REQUIRED_ENVS).some((env) => {
-            const val = vars[env];
-            console.log(`${env}: ${val}`);
-            return typeof val === 'undefined';
-          })
-        )
-          throw Error('Env variables are not valid');
-        console.log('------------\n');
-
-        return vars;
-      },
+      validate: envValidation,
     }),
     ProtocolModule,
     AuthModule,
