@@ -1,9 +1,16 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 
-import { ConfigModule } from './config/config.module';
+import { ProtocolModule } from './protocol/protocol.module';
 import { StatusModule } from './status/status.module';
 
 @Module({
-  imports: [ConfigModule, StatusModule],
+  imports: [
+    ProtocolModule,
+    StatusModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+  ],
 })
 export class AppModule {}

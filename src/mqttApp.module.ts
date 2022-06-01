@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { ConfigModule } from './config/config.module';
+import { ProtocolModule } from './protocol/protocol.module';
 import { StatusModule } from './status/status.module';
 
 @Module({
-  imports: [ConfigModule, StatusModule],
+  imports: [ProtocolModule, StatusModule],
 })
 export class MQTTAppModule {}

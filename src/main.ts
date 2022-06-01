@@ -1,3 +1,4 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions } from '@nestjs/microservices';
 import {
@@ -7,7 +8,7 @@ import {
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
-import { ConfigService } from './config/config.service';
+import { ProtocolService } from './protocol/protocol.service';
 import { MQTTAppModule } from './mqttApp.module';
 
 async function bootstrap() {
@@ -33,10 +34,10 @@ async function bootstrap() {
 
   // ---------------------------
   // mqtt shits
-
+  const configService = app.get(ConfigService);
   const mqttApp = await NestFactory.createMicroservice<MicroserviceOptions>(
     MQTTAppModule,
-    new ConfigService().getMQTTConfig(),
+    new ProtocolService().getMQTTConfig(configService.get('MQTT_BROKER_URL')),
   );
 
   mqttApp.listen();

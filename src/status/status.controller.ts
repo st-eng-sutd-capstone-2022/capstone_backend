@@ -11,7 +11,7 @@ import { ApiHeader, ApiOkResponse } from '@nestjs/swagger';
 import { Status } from './entities/status.entity';
 import { StatusService } from './status.service';
 
-import { CONFIG_SERVICE_TOKEN } from '../config/config.module';
+import { PROTOCOL_SERVICE_TOKEN } from '../protocol/protocol.module';
 
 @ApiHeader({
   name: 'Status',
@@ -20,7 +20,7 @@ import { CONFIG_SERVICE_TOKEN } from '../config/config.module';
 @Controller('status')
 export class StatusController {
   constructor(
-    @Inject(CONFIG_SERVICE_TOKEN.MQTT) private client: ClientProxy,
+    @Inject(PROTOCOL_SERVICE_TOKEN.MQTT) private client: ClientProxy,
     private readonly statusService: StatusService,
   ) {}
 
