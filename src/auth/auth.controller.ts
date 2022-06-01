@@ -1,4 +1,4 @@
-import { Controller, Patch } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { ApiHeader, ApiOkResponse } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
@@ -15,7 +15,7 @@ export class AuthController {
     description: 'Logged in succesfully',
     type: String,
   })
-  @Patch('login')
+  @Post('login')
   login(): string {
     return this.authService.login();
   }
@@ -24,8 +24,17 @@ export class AuthController {
     description: 'Logged out succesfully',
     type: String,
   })
-  @Patch('login')
+  @Post('logout')
   logout(): string {
     return this.authService.logout();
+  }
+
+  @ApiOkResponse({
+    description: 'User is created successfully',
+  })
+  @Post('create-user')
+  createUser(req) {
+    console.log(req);
+    return this.authService.createUser('hello', 'bye');
   }
 }

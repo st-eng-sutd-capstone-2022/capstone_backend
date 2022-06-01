@@ -1,6 +1,7 @@
 import { Global, Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory } from '@nestjs/microservices';
+import { MongooseModule } from '@nestjs/mongoose';
 
 import { ProtocolService } from './protocol.service';
 
@@ -20,9 +21,23 @@ const mqttSerivce = {
   inject: [ProtocolService, ConfigService],
 };
 
+const modules = [
+  MongooseModule.forRootAsync({
+    imports: [ConfigModule],
+    useFactory: async (configService: ConfigService) => {
+      const uri = configService.get('MONGODB_URL');
+      console.log(`🥭 connecting to MongoDB. Link: ${uri}`);
+      return {
+        uri,
+      };
+    },
+    inject: [ConfigService],
+  }),
+];
 @Global()
 @Module({
+  imports: [...modules],
   providers: [mqttSerivce, ProtocolService, ConfigService],
-  exports: [mqttSerivce],
+  exports: [mqttSerivce, ...modules],
 })
 export class ProtocolModule {}

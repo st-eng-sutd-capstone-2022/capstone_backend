@@ -703,6 +703,11 @@
     json-socket "0.3.0"
     tslib "2.4.0"
 
+"@nestjs/mongoose@^9.1.0":
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/mongoose/-/mongoose-9.1.0.tgz#670a532ac56557d0abf1470b8ab95208fc00ce95"
+  integrity sha512-tkd5ZD7UYreHv/OaEcdgbsiwywmXuAwzcD3u/kGAGE8c4dyutkc09LxNGsp9q0+NdV0EK3NauICNLWspF7S+wA==
+
 "@nestjs/platform-express@^8.0.0":
   version "8.4.5"
   resolved "https://registry.yarnpkg.com/@nestjs/platform-express/-/platform-express-8.4.5.tgz#5683da37b4e5463a4f26e78cb5fb1ba75e94440c"
