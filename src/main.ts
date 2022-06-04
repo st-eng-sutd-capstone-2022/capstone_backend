@@ -42,7 +42,7 @@ async function bootstrap() {
 
   SwaggerModule.setup('api', app, document);
 
-  app.listen(3000, '0.0.0.0', (err, address) => {
+  app.listen(process.env.PORT || 3000, '0.0.0.0', (err, address) => {
     console.log(`🚀 connection is established at ${address}`, `Error ${err}`);
     console.log(`🚀 SWAGGER is online at ${address}/api`, `Error ${err}`);
   });
@@ -55,6 +55,6 @@ async function bootstrap() {
     new ProtocolService().getMQTTConfig(configService.get('MQTT_BROKER_URL')),
   );
 
-  // mqttApp.listen();
+  mqttApp.listen();
 }
 bootstrap();

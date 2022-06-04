@@ -38,6 +38,17 @@ services:
     depends_on:
       - mongo
 
+  backend-server:
+    build: .
+    image: nestjs
+    ports:
+      - 3000:3000
+    networks:
+      - capstone
+    depends_on:
+      - mongo
+    volumes:
+      - 
 networks:
   capstone:
     name: capstone

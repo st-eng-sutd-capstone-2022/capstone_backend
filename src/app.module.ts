@@ -43,8 +43,23 @@ const envValidation = (vars: Record<string, any>): Record<string, any> => {
   ],
   imports: [
     ConfigModule.forRoot({
+      cache: true,
       isGlobal: true,
       validate: envValidation,
+      envFilePath: (() => {
+        const NODE_ENV = process.env.NODE_ENV;
+
+        switch (NODE_ENV) {
+          case 'dev':
+            return '.env.dev';
+
+          case 'docker':
+            return '.env.docerk';
+
+          default:
+            return '.env';
+        }
+      })(),
     }),
     ProtocolModule,
     AuthModule,
