@@ -5,9 +5,9 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { UserEntity } from '@modules/user/user.service';
 import { AuthGuard } from '@nestjs/passport';
 import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
+import { User } from '@modules/user/user.schema';
 
 import { CreateUserDTO, LoginDTO, RefreshTokenDTO } from './auth.dto';
 import { AuthService } from './auth.service';
@@ -33,11 +33,9 @@ export class AuthController {
   async login(
     @Body() _: LoginDTO,
     @Request() req,
-  ): Promise<UserEntity & { access_token: string }> {
+  ): Promise<User & { access_token: string }> {
     if (req.user) {
-      const { access_token } = await this.authService.login(
-        req.user as UserEntity,
-      );
+      const { access_token } = await this.authService.login(req.user as User);
 
       return {
         ...req.user,
@@ -62,8 +60,8 @@ export class AuthController {
   })
   @Post('create-user')
   async createUser(@Body() req: CreateUserDTO): Promise<void> {
-    console.log(req);
-    this.authService.createUser(req);
+    await this.authService.createUser(req);
+    return;
   }
 
   @ApiOkResponse({

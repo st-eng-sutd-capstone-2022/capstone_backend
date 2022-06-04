@@ -56,7 +56,7 @@ const envValidation = (vars: Record<string, any>): Record<string, any> => {
             return '.env.dev';
 
           case 'docker':
-            return '.env.docerk';
+            return '.env.docker';
 
           default:
             return '.env';

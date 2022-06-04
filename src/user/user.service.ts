@@ -1,21 +1,27 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 
-export type UserEntity = { email: string; password: string };
-
+import { User, UserDocument } from './user.schema';
 @Injectable()
 export class UserService {
-  FAKE_DB: UserEntity[] = [
-    {
-      email: 'dody@dody.com',
-      password: 'hello',
-    },
-    {
-      email: 'dody2@dody.com',
-      password: 'hello2',
-    },
-  ];
+  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  async findOneWithPassword(email: string): Promise<User> {
+    const user = (
+      await this.userModel.findOne({
+        email,
+      })
+    ).toObject();
 
-  findOne(findEmail: string): UserEntity {
-    return this.FAKE_DB.find(({ email }) => email === findEmail);
+    console.log();
+
+    return {
+      email: user.email,
+      password: user.password,
+    };
+  }
+
+  createOne(user: User): Promise<User> {
+    return this.userModel.create(user);
   }
 }

@@ -37,6 +37,12 @@ async function bootstrap() {
     .setTitle('Capstone s36')
     .setDescription('The caps API description')
     .setVersion('1.0')
+    .addSecurity('ApiKeyAuth', {
+      type: 'apiKey',
+      in: 'header',
+      name: 'Authorization',
+    })
+    .addSecurityRequirements('ApiKeyAuth')
     .build();
   const document = SwaggerModule.createDocument(app, config);
 
