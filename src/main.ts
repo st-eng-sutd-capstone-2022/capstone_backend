@@ -7,11 +7,12 @@ import {
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import fastifyCsrf from 'fastify-csrf';
+import fastifyCookie from 'fastify-cookie';
 
 import { AppModule } from './app.module';
 import { ProtocolService } from './protocol/protocol.service';
 import { MQTTAppModule } from './mqttApp.module';
-
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
@@ -26,6 +27,10 @@ async function bootstrap() {
       whitelist: true,
     }),
   );
+
+  app.register(fastifyCookie);
+  // Add csrf protection
+  app.register(fastifyCsrf);
 
   // Swagger stuff
   const config = new DocumentBuilder()
