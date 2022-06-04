@@ -9,7 +9,6 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
     "start:dev": "dotenv -v NODE_ENV=dev nest start --watch",
     "start:docker": "dotenv -v NODE_ENV=docker nest start --watch",
     "start:debug": "nest start --debug --watch",
