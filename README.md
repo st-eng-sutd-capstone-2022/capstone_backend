@@ -5,15 +5,24 @@
 [circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
 [circleci-url]: https://circleci.com/gh/nestjs/nest
 
+- [Description](#description)
+- [Installation](#installation)
+- [Running the app](#running-the-app)
+- [Test](#test)
+- [Development](#development)
+  - [Decorators](#decorators)
+    - [`@PublicEndpoint()`](#publicendpoint)
+- [Documentation](#documentation)
+
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+the backend that powers world best automated grass cutter
 
 ## Installation
 
-**BEFORE DOING ANYTHING PLEASE INSTALL `YARN` ON YOUR DEVICE**
+**BEFORE DOING ANYTHING PLEASE INSTALL `YARN` **
 
-Can go online and find how ot install yarn
+Can go online and find how to install yarn
 
 ```bash
 # install all the dependencies
@@ -51,6 +60,42 @@ $ yarn run test:cov
 The server listens to port 3000
 
 Read https://docs.nestjs.com/controllers to build some fundamentals on how to work with nestjs.
+
+### Decorators
+
+We have a custom decorator that is used to help build a public endpoint
+
+#### `@PublicEndpoint()`
+
+This decorator will allow the an endpoint or a set of endpoints to not need jwt token header.
+
+Example
+
+```typescript
+@PublicEndpoint() // <-- the extra decorator
+@Controller('auth')
+export class AuthController {
+  ...
+  @Get('login')
+  ...
+  @Get('logout')
+}
+```
+
+In this scenario, the both `login` and `logout` endpoints will be public as they all fall under the `auth` controller.
+
+```typescript
+@Controller('auth')
+export class AuthController {
+  ...
+  @PublicEndpoint() // <-- the extra decorator
+  @Get('login')
+  ...
+  @Get('logout')
+}
+```
+
+In this scenario, only `login` will be open to public. The rest of the endpoints under `auth` will need authentication.
 
 ## Documentation
 
