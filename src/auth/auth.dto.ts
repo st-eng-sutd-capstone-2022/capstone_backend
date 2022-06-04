@@ -10,3 +10,19 @@ export class CreateUserDTO {
   @IsString()
   password: string;
 }
+
+export class RefreshTokenDTO {
+  @ApiProperty()
+  @IsString()
+  refreshToken: string;
+}
+
+export class LoginDTO {
+  @ApiProperty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  password: string;
+}

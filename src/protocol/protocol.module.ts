@@ -26,6 +26,7 @@ const modules = [
     imports: [ConfigModule],
     useFactory: async (configService: ConfigService) => {
       const uri = configService.get('MONGODB_URL');
+
       console.log(`🥭 connecting to MongoDB. Link: ${uri}`);
       return {
         uri,
@@ -34,6 +35,7 @@ const modules = [
     inject: [ConfigService],
   }),
 ];
+
 @Global()
 @Module({
   imports: [...modules],

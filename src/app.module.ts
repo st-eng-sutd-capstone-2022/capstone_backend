@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { AuthModule } from './auth/auth.module';
+import { JwtAuthGuard } from './auth/jwtAuth.guard';
 import { LoggingInterceptor } from './logging.interceptor';
 import { ProtocolModule } from './protocol/protocol.module';
 import { StatusModule } from './status/status.module';
@@ -10,6 +11,7 @@ import { StatusModule } from './status/status.module';
 const REQUIRED_ENVS = {
   MONGODB_URL: 'MONGODB_URL',
   MQTT_BROKER_URL: 'MQTT_BROKER_URL',
+  JWT_SECRET: 'JWT_SECRET',
 };
 
 const envValidation = (vars: Record<string, any>): Record<string, any> => {
@@ -17,6 +19,7 @@ const envValidation = (vars: Record<string, any>): Record<string, any> => {
   if (
     Object.keys(REQUIRED_ENVS).some((env) => {
       const val = vars[env];
+
       console.log(`${env}: ${val}`);
       return typeof val === 'undefined';
     })
@@ -32,6 +35,10 @@ const envValidation = (vars: Record<string, any>): Record<string, any> => {
     {
       provide: APP_INTERCEPTOR,
       useClass: LoggingInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
     },
   ],
   imports: [

@@ -50,6 +50,6 @@ async function bootstrap() {
     new ProtocolService().getMQTTConfig(configService.get('MQTT_BROKER_URL')),
   );
 
-  mqttApp.listen();
+  // mqttApp.listen();
 }
 bootstrap();
