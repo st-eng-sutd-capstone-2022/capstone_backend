@@ -38,7 +38,8 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
 
   app.listen(3000, '0.0.0.0', (err, address) => {
-    console.log(`connection is established at ${address}`, err);
+    console.log(`🚀 connection is established at ${address}`, `Error ${err}`);
+    console.log(`🚀 SWAGGER is online at ${address}/api`, `Error ${err}`);
   });
 
   // ---------------------------
