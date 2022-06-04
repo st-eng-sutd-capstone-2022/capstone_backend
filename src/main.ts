@@ -18,6 +18,9 @@ async function bootstrap() {
     AppModule,
     // Turn off logger during prod
     new FastifyAdapter({ logger: false }),
+    {
+      cors: true,
+    },
   );
 
   // Add validation pipeline to all API
