@@ -2,7 +2,8 @@ const mqtt = require('mqtt');
 
 // const client = mqtt.connect('mqtt://localhost:6379');
 const client = mqtt.connect('mqtt://broker.hivemq.com:1883');
-let TOPIC = 'telemetry_s36/123';
+const boatId = 'mock123';
+let TOPIC = `telemetry_s36/${boatId}`;
 
 let i = 0;
 

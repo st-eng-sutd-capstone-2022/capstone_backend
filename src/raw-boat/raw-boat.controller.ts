@@ -24,7 +24,7 @@ export class RawBoatController {
     });
     console.log(
       `ping: ${
-        Date.now() - data['time']
+        Date.now() - (data.timestamp as unknown as number)
       }ms | boatId: ${id} | Data ${JSON.stringify(data)}`,
     );
   }
