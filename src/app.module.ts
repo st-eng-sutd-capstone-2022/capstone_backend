@@ -9,6 +9,7 @@ import { ProtocolModule } from './protocol/protocol.module';
 import { StatusModule } from './status/status.module';
 
 const REQUIRED_ENVS = {
+  NODE_ENV: 'NODE_ENV',
   MONGODB_URL: 'MONGODB_URL',
   MQTT_BROKER_URL: 'MQTT_BROKER_URL',
   JWT_SECRET: 'JWT_SECRET',
@@ -16,6 +17,7 @@ const REQUIRED_ENVS = {
 
 const envValidation = (vars: Record<string, any>): Record<string, any> => {
   console.log('Env variables\n------------');
+
   if (
     Object.keys(REQUIRED_ENVS).some((env) => {
       const val = vars[env];
@@ -24,7 +26,7 @@ const envValidation = (vars: Record<string, any>): Record<string, any> => {
       return typeof val === 'undefined';
     })
   )
-    throw Error('Env variables are not valid');
+    throw Error('Env variables are not valid 123');
   console.log('------------\n');
 
   return vars;

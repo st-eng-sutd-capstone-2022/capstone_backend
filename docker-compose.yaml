@@ -1,12 +1,12 @@
 version: "3"
 services:
-  redis:
-    image: redis
-    # restart: always
-    ports:
-      - 6379:6379
-    networks:
-      - capstone
+  # redis:
+  #   image: redis
+  #   # restart: always
+  #   ports:
+  #     - 6379:6379
+  #   networks:
+  #     - capstone
 
   mongo:
     image: mongo
@@ -41,6 +41,7 @@ services:
   backend-server:
     build: .
     image: nestjs
+    container_name: backend-server
     ports:
       - 3000:3000
     networks:
@@ -48,7 +49,11 @@ services:
     depends_on:
       - mongo
     volumes:
-      - 
+      - ./:/app
+    env_file:
+      - .env.docker
+    command: npm run start:docker
+
 networks:
   capstone:
     name: capstone
