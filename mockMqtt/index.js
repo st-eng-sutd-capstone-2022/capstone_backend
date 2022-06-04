@@ -11,9 +11,8 @@ client.on('message', function (topic, message) {
   console.log(`${i++} topic: ${topic}`, JSON.parse(message.toString()));
 });
 
-const publish = (data, t) => {
+const publish = (t) => {
   const payload = {
-    ...(typeof data === 'object' ? data : { data: data }),
     timestamp: Date.now(),
     latitude: String(Math.random() * 350),
     longtitude: String(Math.random() * 60),
@@ -23,5 +22,7 @@ const publish = (data, t) => {
   client.publish(t, Buffer.from(JSON.stringify(payload)));
 };
 
-let t = setInterval(() => publish({ 1: 1 }, TOPIC), 1000);
-// clearInterval(t);
+let t = setInterval(() => publish(TOPIC), 1000);
+
+console.log('mock funciton will end in 60 seconds');
+setTimeout(() => clearInterval(t), 60 * 1000);
