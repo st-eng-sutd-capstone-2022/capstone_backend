@@ -33,15 +33,14 @@ export class StatusController {
     return this.statusService.getHealth();
   }
 
-  @EventPattern('capstones36')
+  @EventPattern('keep-alive')
   hello(@Payload() data: unknown, @Ctx() context: MqttContext): void {
-    console.log(`ping: ${Date.now() - data['time']}ms`);
-    // console.log(data, context.getTopic());
-    // this.client.emit('capstones37', 'Consumed ACK');
+    console.log(`ping: ${Date.now() - data['timestamp']}ms`);
+    setTimeout(() => {
+      this.client.emit('keep-alive', {
+        timestamp: Date.now(),
+        val: (data['val'] || 0) + 1,
+      });
+    }, 1000);
   }
-
-  // @EventPattern('capstones37')
-  // helloa(@Payload() data: unknown, @Ctx() context: MqttContext): void {
-  //   console.log(data, context.getTopic(), '\n');
-  // }
 }
