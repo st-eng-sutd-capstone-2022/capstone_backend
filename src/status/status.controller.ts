@@ -35,12 +35,12 @@ export class StatusController {
 
   @EventPattern('keep-alive')
   hello(@Payload() data: unknown, @Ctx() context: MqttContext): void {
-    console.log(`ping: ${Date.now() - data['timestamp']}ms`);
+    console.log(`heartbeat | ping: ${Date.now() - data['timestamp']}ms`);
     setTimeout(() => {
       this.client.emit('keep-alive', {
         timestamp: Date.now(),
         val: (data['val'] || 0) + 1,
       });
-    }, 1000);
+    }, 1000 * 10);
   }
 }
