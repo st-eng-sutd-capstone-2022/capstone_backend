@@ -7,6 +7,7 @@ import { JwtAuthGuard } from './auth/jwtAuth.guard';
 import { LoggingInterceptor } from './logging.interceptor';
 import { ProtocolModule } from './protocol/protocol.module';
 import { StatusModule } from './status/status.module';
+import { BoatModule } from './boat/boat.module';
 
 @Module({
   providers: [
@@ -19,6 +20,6 @@ import { StatusModule } from './status/status.module';
       useClass: JwtAuthGuard,
     },
   ],
-  imports: [ProtocolModule, AuthModule, StatusModule],
+  imports: [ProtocolModule, AuthModule, StatusModule, BoatModule],
 })
 export class AppModule {}
