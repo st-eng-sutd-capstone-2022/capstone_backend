@@ -19,9 +19,9 @@ export class AuthService {
     return null;
   }
 
-  async login({ email, password }: User): Promise<{ access_token: string }> {
+  async login({ email, type }: User): Promise<{ access_token: string }> {
     return {
-      access_token: this.jwtService.sign({ email, password }),
+      access_token: this.jwtService.sign({ email, type }),
     };
   }
 
@@ -29,6 +29,7 @@ export class AuthService {
     return this.userService.createOne({
       email,
       password,
+      type: 'user',
     });
   }
 

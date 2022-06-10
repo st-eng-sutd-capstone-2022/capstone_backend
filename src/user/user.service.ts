@@ -18,6 +18,7 @@ export class UserService {
     return {
       email: user.email,
       password: user.password,
+      type: user.type,
     };
   }
 
