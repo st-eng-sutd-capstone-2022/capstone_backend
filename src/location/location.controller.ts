@@ -12,14 +12,11 @@ import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
   description: 'Handles all the boat locations for map view',
 })
 @ApiTags('Location')
-
 @Controller('location')
 export class LocationController {
-
   @ApiOkResponse({
     description: 'Boat locations retrieved successfully',
   })
-
   @Get()
   findAll() {
     return [
@@ -50,7 +47,7 @@ export class LocationController {
   }
 
   @ApiOkResponse({
-    description: 'Logged out succesfully'
+    description: 'Logged out succesfully',
   })
   @Get('liveboats')
   findAllLiveboats() {

@@ -22,6 +22,13 @@ import { AssignModule } from './assign/assign.module';
       useClass: JwtAuthGuard,
     },
   ],
-  imports: [ProtocolModule, AuthModule, StatusModule, BoatModule, LocationModule, AssignModule],
+  imports: [
+    ProtocolModule,
+    AuthModule,
+    StatusModule,
+    BoatModule,
+    LocationModule,
+    AssignModule,
+  ],
 })
 export class AppModule {}

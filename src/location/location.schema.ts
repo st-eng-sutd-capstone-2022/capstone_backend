@@ -5,9 +5,7 @@ export type LocationDocument = Location & Document;
 
 @Schema()
 export class Location extends Document {
-
   //@Prop()
-  
 }
 
 export const LocationSchema = SchemaFactory.createForClass(Location);
