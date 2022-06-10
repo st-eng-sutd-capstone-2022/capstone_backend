@@ -8,6 +8,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
 import { User } from '@modules/user/user.schema';
+import { UserDTO } from '@modules/user/user.dto';
 
 import { CreateUserDTO, LoginDTO, RefreshTokenDTO } from './auth.dto';
 import { AuthService } from './auth.service';
@@ -33,12 +34,13 @@ export class AuthController {
   async login(
     @Body() _: LoginDTO,
     @Request() req,
-  ): Promise<User & { access_token: string }> {
+  ): Promise<UserDTO & { access_token: string }> {
     if (req.user) {
       const { access_token } = await this.authService.login(req.user as User);
 
       return {
-        ...req.user,
+        email: req.user.email,
+        type: req.user.type,
         access_token,
       };
     }
