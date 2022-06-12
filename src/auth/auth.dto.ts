@@ -11,6 +11,16 @@ export class CreateUserDTO {
   password: string;
 }
 
+export class ChangePasswordDTO {
+  @ApiProperty()
+  @IsString()
+  password: string;
+
+  @ApiProperty()
+  @IsString()
+  newPassword: string;
+}
+
 export class RefreshTokenDTO {
   @ApiProperty()
   @IsString()

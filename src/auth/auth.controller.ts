@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Request,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiHeader,
@@ -9,8 +16,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
 import { User } from '@modules/user/user.schema';
 import { UserDTO } from '@modules/user/user.dto';
+import { Ctx } from '@nestjs/microservices';
 
-import { CreateUserDTO, LoginDTO, RefreshTokenDTO } from './auth.dto';
+import {
+  ChangePasswordDTO,
+  CreateUserDTO,
+  LoginDTO,
+  RefreshTokenDTO,
+} from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwtAuth.guard';
 
@@ -19,7 +32,6 @@ import { JwtAuthGuard } from './jwtAuth.guard';
   description: 'Handles all the authentication stuff',
 })
 @ApiTags('Auth')
-@PublicEndpoint()
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -63,6 +75,20 @@ export class AuthController {
   @Post('create-user')
   async createUser(@Body() req: CreateUserDTO): Promise<void> {
     await this.authService.createUser(req);
+    return;
+  }
+
+  @ApiCreatedResponse({
+    description: 'User is created successfully',
+  })
+  @Post('change-password')
+  async changePassword(
+    @Request() { user, body }: { user: User; body: ChangePasswordDTO },
+  ): Promise<boolean> {
+    if (!(await this.authService.validate(user.email, body.password))) {
+      throw new UnauthorizedException('Wrong password');
+    }
+    !!(await this.authService.changePassword(user.email, body.newPassword));
     return;
   }
 

@@ -25,4 +25,19 @@ export class UserService {
   createOne(user: User): Promise<User> {
     return this.userModel.create(user);
   }
+
+  async updateOne(email, user: Partial<User>): Promise<User> {
+    try {
+      const res = await this.userModel.findOneAndUpdate(
+        {
+          email,
+        },
+        user,
+      );
+
+      return res.toObject();
+    } catch (e) {
+      throw e;
+    }
+  }
 }

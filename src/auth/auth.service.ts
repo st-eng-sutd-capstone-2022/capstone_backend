@@ -19,6 +19,13 @@ export class AuthService {
     return null;
   }
 
+  async changePassword(email, newPassword) {
+    this.userService.updateOne(email, {
+      password: newPassword,
+    });
+    return null;
+  }
+
   async login({ email, type }: User): Promise<{ access_token: string }> {
     return {
       access_token: this.jwtService.sign({ email, type }),
