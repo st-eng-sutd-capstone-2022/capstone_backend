@@ -1,11 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
 import {
-  ApiCreatedResponse,
   ApiHeader,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
 
 @ApiHeader({
   name: 'Location',
