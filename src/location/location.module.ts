@@ -13,5 +13,4 @@ import { LocationController } from './location.controller';
       // ],
       controllers: [LocationController],
 })
-
 export class LocationModule {}

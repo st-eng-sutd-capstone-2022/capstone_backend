@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import {
+  ApiCreatedResponse,
   ApiHeader,
   ApiOkResponse,
   ApiTags,
@@ -17,7 +18,6 @@ export class LocationController {
   @ApiOkResponse({
     description: 'Boat locations retrieved successfully',
   })
-
   @Get()
   findAll() {
     return [

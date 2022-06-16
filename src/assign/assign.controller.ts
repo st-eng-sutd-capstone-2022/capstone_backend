@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Param,
-  Request,
-  Body,
-} from '@nestjs/common';
+import { Controller, Get, Post, Put, Param, Request, Body, } from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiHeader,
@@ -26,6 +18,7 @@ import { AssignService } from './assign.service';
 @ApiTags('Assign')
 @Controller('assign')
 export class AssignController {
+
   constructor(private readonly assignService: AssignService) {}
   @ApiCreatedResponse({
     description: 'New boat assigned successfully',
@@ -73,6 +66,7 @@ export class AssignController {
         assignee: 'Bob',
       },
     ];
+
   }
 
   @ApiOkResponse({
