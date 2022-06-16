@@ -2,6 +2,8 @@ import { User } from '@modules/user/user.schema';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
+import { CreateUserDTO } from './auth.dto';
+
 import { UserService } from '../user/user.service';
 
 @Injectable()
@@ -26,16 +28,23 @@ export class AuthService {
     return null;
   }
 
-  async login({ email, type }: User): Promise<{ access_token: string }> {
+  async login({
+    email,
+    type,
+    employeeId,
+    username,
+  }: User): Promise<{ access_token: string }> {
     return {
-      access_token: this.jwtService.sign({ email, type }),
+      access_token: this.jwtService.sign({ email, type, employeeId, username }),
     };
   }
 
-  createUser({ email, password }) {
+  createUser({ email, password, employeeId, username }: CreateUserDTO) {
     return this.userService.createOne({
       email,
       password,
+      employeeId,
+      username,
       type: 'user',
     });
   }

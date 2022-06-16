@@ -13,12 +13,12 @@ export class UserService {
       })
     ).toObject();
 
-    console.log();
-
     return {
       email: user.email,
       password: user.password,
       type: user.type,
+      username: user.username,
+      employeeId: user.employeeId,
     };
   }
 
@@ -26,13 +26,13 @@ export class UserService {
     return this.userModel.create(user);
   }
 
-  async updateOne(email, user: Partial<User>): Promise<User> {
+  async updateOne(email, payload: Partial<User>): Promise<User> {
     try {
       const res = await this.userModel.findOneAndUpdate(
         {
           email,
         },
-        user,
+        payload,
       );
 
       return res.toObject();

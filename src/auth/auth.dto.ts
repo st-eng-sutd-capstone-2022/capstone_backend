@@ -9,6 +9,28 @@ export class CreateUserDTO {
   @ApiProperty()
   @IsString()
   password: string;
+
+  @ApiProperty()
+  @IsString()
+  username: string;
+
+  @ApiProperty()
+  @IsString()
+  employeeId: string;
+}
+
+export class UpdateUserDTO {
+  @ApiProperty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsString()
+  username: string;
+
+  @ApiProperty()
+  @IsString()
+  employeeId: string;
 }
 
 export class ChangePasswordDTO {

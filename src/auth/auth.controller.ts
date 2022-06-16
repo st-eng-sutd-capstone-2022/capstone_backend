@@ -1,28 +1,32 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
+  Put,
   Request,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBody,
   ApiCreatedResponse,
   ApiHeader,
   ApiOkResponse,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
 import { AuthGuard } from '@nestjs/passport';
 import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
 import { User } from '@modules/user/user.schema';
-import { UserDTO } from '@modules/user/user.dto';
-import { Ctx } from '@nestjs/microservices';
+import { UserService } from '@modules/user/user.service';
 
 import {
   ChangePasswordDTO,
   CreateUserDTO,
   LoginDTO,
   RefreshTokenDTO,
+  UpdateUserDTO,
 } from './auth.dto';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwtAuth.guard';
@@ -34,8 +38,14 @@ import { JwtAuthGuard } from './jwtAuth.guard';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
 
+  @ApiBody({
+    type: LoginDTO,
+  })
   @ApiOkResponse({
     description: 'Logged in succesfully',
     type: String,
@@ -46,13 +56,15 @@ export class AuthController {
   async login(
     @Body() _: LoginDTO,
     @Request() req,
-  ): Promise<UserDTO & { access_token: string }> {
+  ): Promise<Omit<User, 'password'> & { access_token: string }> {
     if (req.user) {
       const { access_token } = await this.authService.login(req.user as User);
 
       return {
         email: req.user.email,
         type: req.user.type,
+        username: req.user.username,
+        employeeId: req.user.employeeId,
         access_token,
       };
     }
@@ -69,6 +81,9 @@ export class AuthController {
     return this.authService.logout();
   }
 
+  @ApiBody({
+    type: CreateUserDTO,
+  })
   @ApiCreatedResponse({
     description: 'User is created successfully',
   })
@@ -78,6 +93,9 @@ export class AuthController {
     return;
   }
 
+  @ApiBody({
+    type: ChangePasswordDTO,
+  })
   @ApiCreatedResponse({
     description: 'User is created successfully',
   })
@@ -100,5 +118,27 @@ export class AuthController {
   getToken(@Body() req: RefreshTokenDTO): string {
     console.log(req.refreshToken);
     return this.authService.logout();
+  }
+
+  @ApiBody({
+    type: UpdateUserDTO,
+  })
+  @ApiCreatedResponse({
+    description: 'User is created successfully',
+  })
+  @Put('update-user')
+  async updateUser(
+    @Request() { user, body }: { user: User; body: UpdateUserDTO },
+  ): Promise<void> {
+    await this.userService.updateOne(user.email, body);
+    return;
+  }
+
+  @ApiResponse({
+    description: 'Return user object',
+  })
+  @Get('me')
+  getme(@Request() { user }): Promise<User> {
+    return user;
   }
 }

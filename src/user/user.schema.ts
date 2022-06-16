@@ -15,6 +15,14 @@ export class User {
 
   @Prop()
   type: 'super' | 'user';
+
+  @Prop()
+  username: string;
+
+  @Prop({
+    unique: true,
+  })
+  employeeId: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
