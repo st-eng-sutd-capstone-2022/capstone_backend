@@ -123,8 +123,8 @@ export class AuthController {
   @ApiBody({
     type: UpdateUserDTO,
   })
-  @ApiCreatedResponse({
-    description: 'User is created successfully',
+  @ApiOkResponse({
+    description: 'User is updated successfully',
   })
   @Put('update-user')
   async updateUser(
