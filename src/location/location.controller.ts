@@ -5,15 +5,16 @@ import {
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
 
 @ApiHeader({
   name: 'Location',
   description: 'Handles all the boat locations for map view',
 })
 @ApiTags('Location')
+
 @Controller('location')
 export class LocationController {
+
   @ApiOkResponse({
     description: 'Boat locations retrieved successfully',
   })
@@ -47,7 +48,7 @@ export class LocationController {
   }
 
   @ApiOkResponse({
-    description: 'Logged out succesfully',
+    description: 'Logged out succesfully'
   })
   @Get('liveboats')
   findAllLiveboats() {

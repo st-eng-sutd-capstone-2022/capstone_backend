@@ -5,7 +5,22 @@ export type AssignDocument = Assign & Document;
 
 @Schema()
 export class Assign extends Document {
-  //@Prop()
+  @Prop({
+    unique: true,
+  })
+  serialNumber: string;
+
+  @Prop()
+  boatId: string;
+
+  @Prop()
+  location: string;
+
+  @Prop()
+  dateAssigned: string;
+
+  @Prop()
+  assignee: string;
 }
 
 export const AssignSchema = SchemaFactory.createForClass(Assign);

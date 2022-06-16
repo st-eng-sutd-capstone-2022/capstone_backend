@@ -93,7 +93,7 @@ export class AuthController {
   }
 
   @ApiOkResponse({
-    description: 'Get token by using refersh token',
+    description: 'Get token by using refresh token',
     type: String,
   })
   @Post('refresh')
