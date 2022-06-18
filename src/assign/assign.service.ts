@@ -13,4 +13,24 @@ export class AssignService {
     console.log(assign);
     return this.assignModel.create(assign);
   }
+
+  async findAllAssigned(): Promise<Assign[]> {
+    return await this.assignModel.find().exec();
+  }
+
+  async updateOneAssigned(id, assign: Partial<Assign>): Promise<Assign> {
+    console.log(id);
+    try {
+      const res = await this.assignModel.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        assign,
+      );
+
+      return res.toObject();
+    } catch (e) {
+      throw e;
+    }
+  }
 }
