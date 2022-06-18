@@ -1,24 +1,29 @@
-import { Controller, Get, Post, Put, Param, Request, Body, } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Param,
+  Request,
+  Body,
+  Res,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiHeader,
   ApiOkResponse,
+  ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import * as moment from 'moment';
-import { userInfo } from 'os';
 import { AssignDTO } from './assign.dto';
 import { Assign } from './assign.schema';
 import { AssignService } from './assign.service';
 
-@ApiHeader({
-  name: 'Assign',
-  description: 'Handles all the assigning of new boats',
-})
 @ApiTags('Assign')
 @Controller('assign')
 export class AssignController {
-
   constructor(private readonly assignService: AssignService) {}
   @ApiCreatedResponse({
     description: 'New boat assigned successfully',
@@ -30,7 +35,7 @@ export class AssignController {
       let assignBoat = {
         ...req.body,
         dateAssigned: datenow,
-        assignee: req.user.name, // TODO: check why undefined
+        assignee: req.user.email, // TODO: check why undefined
       };
       await this.assignService.createOne(assignBoat);
       return assignBoat;
@@ -42,44 +47,39 @@ export class AssignController {
     description: 'Assigned boats retrieved successfully',
   })
   @Get()
-  findAll() {
-    return [
-      {
-        serialNumber: '124124',
-        boatId: '122',
-        location: 'Seletar',
-        dateAssigned: '01-05-2022',
-        assignee: 'Bob',
-      },
-      {
-        serialNumber: '122344',
-        boatId: '163',
-        location: 'Seletar',
-        dateAssigned: '03-07-2022',
-        assignee: 'Annie',
-      },
-      {
-        serialNumber: '123034',
-        boatId: '102',
-        location: 'Seletar',
-        dateAssigned: '20-09-2022',
-        assignee: 'Bob',
-      },
-    ];
-
+  async findAll() {
+    return await this.assignService.findAllAssigned();
   }
 
+  // @ApiOkResponse({
+  //   description: 'Selected boat retrieved successfully',
+  // })
+  // @Get()
+  // async findOne() {
+  //   return await this.assignService.findOneAssigned();
+  // }
+
+  @ApiParam({
+    name: 'id',
+    description: 'Object ID of boat that has to be updated ',
+  })
   @ApiOkResponse({
     description: 'Assigned boat edited successfully',
   })
   @Put(':id')
-  update(@Param('id') id: string) {
-    return [
-      {
-        serialNumber: '124124',
-        boatId: '122',
-        location: 'Seletar',
-      },
-    ];
+  async updateAssign(
+    @Param() { id },
+    @Body() _: AssignDTO,
+    @Request() req,
+  ): Promise<boolean> {
+    console.log(req.params);
+    let datenow = moment().format('DD-MM-YYYY');
+    let updatedAssign = {
+      ...req.body,
+      dateAssigned: datenow,
+      assignee: req.user.email, // TODO: check why undefined
+    };
+    !!(await this.assignService.updateOneAssigned(id, updatedAssign));
+    return;
   }
 }
