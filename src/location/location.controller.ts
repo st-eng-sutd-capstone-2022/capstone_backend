@@ -1,54 +1,44 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import {
+  ApiBody,
   ApiCreatedResponse,
   ApiHeader,
   ApiOkResponse,
   ApiTags,
 } from '@nestjs/swagger';
 
+import { CreateLocationDTO } from './location.dto';
+import { LocationService } from './location.service';
+
 @ApiHeader({
   name: 'Location',
   description: 'Handles all the boat locations for map view',
 })
 @ApiTags('Location')
-
 @Controller('location')
 export class LocationController {
-
+  constructor(private readonly locationService: LocationService) {}
   @ApiOkResponse({
     description: 'Boat locations retrieved successfully',
   })
   @Get()
   findAll() {
-    return [
-      {
-        location: 'Seletar',
-        lat: '1.404701',
-        lng: '103.838530',
-        totalZones: '6',
-        lastUpdated: '2022-06-01T03:02:25Z',
-        zone: [
-          {
-            name: 1,
-            lat1: '0.555',
-            long1: '104.66',
-            lat2: '0.555',
-            long2: '104.66,',
-          },
-          {
-            name: 2,
-            lat1: '0.555',
-            long1: '104.66',
-            lat2: '0.555',
-            long2: '104.66',
-          },
-        ],
-      },
-    ];
+    return this.locationService.getAll();
+  }
+
+  @ApiBody({
+    type: CreateLocationDTO,
+  })
+  @ApiCreatedResponse({
+    description: 'Added a new location successfully',
+  })
+  @Post()
+  addNewLocation(@Body() body) {
+    return this.locationService.addOneLocation(body);
   }
 
   @ApiOkResponse({
-    description: 'Logged out succesfully'
+    description: 'Logged out succesfully',
   })
   @Get('liveboats')
   findAllLiveboats() {

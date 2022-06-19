@@ -1,10 +1,29 @@
-import { Controller, Get, Post, Put, Param } from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiHeader,
-  ApiOkResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Get } from '@nestjs/common';
+import { ApiHeader, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+
+const isInsideNPoly = (
+  noOfVertices: number,
+  vertx: number[],
+  verty: number[],
+  testx: number,
+  testy: number,
+): boolean => {
+  let i = 0;
+  let j = 0;
+  let c = false;
+
+  for (i = 0, j = noOfVertices - 1; i < noOfVertices; j = i++) {
+    if (
+      // within the y value
+      verty[i] > testy !== verty[j] > testy &&
+      testx <
+        ((vertx[j] - vertx[i]) * (testy - verty[i])) / (verty[j] - verty[i]) +
+          vertx[i]
+    )
+      c = !c; // flip the flag whenever the ray crosses an edge
+  }
+  return c;
+};
 
 @ApiHeader({
   name: 'Boat',
@@ -20,6 +39,7 @@ export class BoatController {
   findAll() {
     return [
       {
+        // Active means that the motor is on.
         activeHoursData: {
           labels: [
             '01-05-2022',
