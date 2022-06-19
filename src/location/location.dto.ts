@@ -26,12 +26,14 @@ export class CreateLocationDTO {
   long: number;
 
   @ApiProperty({
-    type: Zone,
-    example: {
-      name: '1',
-      lats: [0, 0, 1, 1],
-      longs: [0, 1, 0, 1],
-    },
+    type: [Zone],
+    example: [
+      {
+        name: '1',
+        lats: [0, 0, 1, 1],
+        longs: [0, 1, 0, 1],
+      },
+    ],
   })
   zones: Zone[];
 }
