@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+  Put,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiCreatedResponse,
@@ -7,7 +16,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { CreateLocationDTO } from './location.dto';
+import {
+  CreateLocationDTO,
+  DeleteLocationDTO,
+  UpdateLocationDTO,
+} from './location.dto';
 import { LocationService } from './location.service';
 
 @ApiHeader({
@@ -35,6 +48,40 @@ export class LocationController {
   @Post()
   addNewLocation(@Body() body) {
     return this.locationService.addOneLocation(body);
+  }
+
+  @ApiBody({
+    type: UpdateLocationDTO,
+  })
+  @ApiOkResponse({
+    description: 'Location updated successfully',
+  })
+  @Put()
+  updateLocation(@Body() body) {
+    if (!body.location) {
+      throw new HttpException(
+        'You have to specify the location to update',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.locationService.updateOneLocation(body);
+  }
+
+  @ApiBody({
+    type: DeleteLocationDTO,
+  })
+  @ApiCreatedResponse({
+    description: 'Location updated successfully',
+  })
+  @Delete()
+  deleteLocation(@Body() body) {
+    if (!body.location) {
+      throw new HttpException(
+        'You have to specify the location to delete',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    return this.locationService.deleteOneLocation(body);
   }
 
   @ApiOkResponse({
