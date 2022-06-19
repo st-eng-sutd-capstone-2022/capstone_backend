@@ -8,6 +8,8 @@ import {
   Body,
   Res,
   HttpStatus,
+  Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -35,7 +37,7 @@ export class AssignController {
       let assignBoat = {
         ...req.body,
         dateAssigned: datenow,
-        assignee: req.user.email, // TODO: check why undefined
+        assignee: req.user.email, // TODO: check why user.name undefined
       };
       await this.assignService.createOne(assignBoat);
       return assignBoat;
@@ -59,12 +61,13 @@ export class AssignController {
     description: 'Assigned boat retrieved using boatId',
   })
   @Get('/:boatId')
-  public async findOne(@Res() Res, @Param('boatId') boatId: string) {
+  public async findOne(@Param('boatId') boatId: string) {
     try {
       const assign = await this.assignService.findOneAssigned(boatId);
+      // console.log(assign);
       return assign;
     } catch (e) {
-      throw e;
+      throw new NotFoundException('Unable to find boat with boatId: ' + boatId);
     }
   }
 
@@ -81,7 +84,7 @@ export class AssignController {
     @Body() _: AssignDTO,
     @Request() req,
   ): Promise<boolean> {
-    console.log(req.params);
+    // console.log(req.params);
     let datenow = moment().format('DD-MM-YYYY');
     let updatedAssign = {
       ...req.body,
@@ -90,5 +93,23 @@ export class AssignController {
     };
     !!(await this.assignService.updateOneAssigned(id, updatedAssign));
     return;
+  }
+
+  @ApiParam({
+    name: 'boatId',
+    description: 'boatId of boat to be deleted',
+  })
+  @ApiOkResponse({
+    description: 'Boat with selected boatId deleted',
+  })
+  @Delete('/:boatId')
+  public async deleteOneAssigned(@Param('boatId') boatId: string) {
+    try {
+      const assign = await this.assignService.deleteOneAssigned(boatId);
+      !!assign;
+      return;
+    } catch (error) {
+      throw new NotFoundException('Unable to find boat with boatId: ' + boatId);
+    }
   }
 }
