@@ -51,13 +51,22 @@ export class AssignController {
     return await this.assignService.findAllAssigned();
   }
 
-  // @ApiOkResponse({
-  //   description: 'Selected boat retrieved successfully',
-  // })
-  // @Get()
-  // async findOne() {
-  //   return await this.assignService.findOneAssigned();
-  // }
+  @ApiParam({
+    name: 'boatId',
+    description: 'boatId of boat to be retrieved',
+  })
+  @ApiOkResponse({
+    description: 'Assigned boat retrieved using boatId',
+  })
+  @Get('/:boatId')
+  public async findOne(@Res() Res, @Param('boatId') boatId: string) {
+    try {
+      const assign = await this.assignService.findOneAssigned(boatId);
+      return assign;
+    } catch (e) {
+      throw e;
+    }
+  }
 
   @ApiParam({
     name: 'id',

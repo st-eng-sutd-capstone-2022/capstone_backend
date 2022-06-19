@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
@@ -16,6 +16,20 @@ export class AssignService {
 
   async findAllAssigned(): Promise<Assign[]> {
     return await this.assignModel.find().exec();
+  }
+
+  public async findOneAssigned(boatId: string): Promise<Assign> {
+    try {
+      const assign = await this.assignModel
+        .findOne({
+          boatId,
+        })
+        .exec();
+      console.log(assign);
+      return assign;
+    } catch (e) {
+      throw e;
+    }
   }
 
   async updateOneAssigned(id, assign: Partial<Assign>): Promise<Assign> {
