@@ -81,7 +81,7 @@ export class LocationController {
         HttpStatus.BAD_REQUEST,
       );
     }
-    return this.locationService.deleteOneLocation(body);
+    return this.locationService.deleteOneLocation(body.location);
   }
 
   @ApiOkResponse({
