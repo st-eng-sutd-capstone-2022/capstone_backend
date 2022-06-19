@@ -10,7 +10,7 @@ export class AssignService {
   ) {}
 
   createOne(assign: Assign): Promise<Assign> {
-    console.log(assign);
+    // console.log(assign);
     return this.assignModel.create(assign);
   }
 
@@ -18,14 +18,13 @@ export class AssignService {
     return await this.assignModel.find().exec();
   }
 
-  public async findOneAssigned(boatId: string): Promise<Assign> {
+  async findOneAssigned(boatId: string): Promise<Assign> {
     try {
       const assign = await this.assignModel
         .findOne({
           boatId,
         })
         .exec();
-      console.log(assign);
       return assign;
     } catch (e) {
       throw e;
@@ -43,6 +42,19 @@ export class AssignService {
       );
 
       return res.toObject();
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  async deleteOneAssigned(boatId: string): Promise<Assign> {
+    try {
+      const assign = await this.assignModel
+        .findOneAndDelete({
+          boatId,
+        })
+        .exec();
+      return assign;
     } catch (e) {
       throw e;
     }

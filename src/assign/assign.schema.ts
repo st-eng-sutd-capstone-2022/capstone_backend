@@ -5,11 +5,11 @@ export type AssignDocument = Assign & Document;
 
 @Schema()
 export class Assign extends Document {
-  @Prop({
-    type: SchemaTypes.ObjectId,
-    ref: Assign.name,
-  })
-  _id: Types.ObjectId;
+  // @Prop({
+  //   type: SchemaTypes.ObjectId,
+  //   ref: Assign.name,
+  // })
+  // _id: Types.ObjectId;
 
   @Prop({
     unique: true,
