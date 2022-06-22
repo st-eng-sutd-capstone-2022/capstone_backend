@@ -19,7 +19,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     ]);
 
     // TODO revert back
-    return true;
+    // return true;
     if (isPublic.some((flag) => flag)) {
       return true;
     }
