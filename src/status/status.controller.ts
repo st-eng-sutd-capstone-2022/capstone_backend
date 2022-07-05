@@ -6,7 +6,7 @@ import {
   MqttContext,
   Payload,
 } from '@nestjs/microservices';
-import { ApiHeader, ApiOkResponse } from '@nestjs/swagger';
+import { ApiHeader, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
 import { Status } from './entities/status.entity';
 import { StatusService } from './status.service';
@@ -17,6 +17,7 @@ import { PROTOCOL_SERVICE_TOKEN } from '../protocol/protocol.module';
   name: 'Status',
   description: 'Check the status of the server',
 })
+@ApiTags('Status')
 @Controller('status')
 export class StatusController {
   constructor(

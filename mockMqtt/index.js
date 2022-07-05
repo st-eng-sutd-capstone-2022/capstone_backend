@@ -23,7 +23,9 @@ const publish = (t) => {
   client.publish(t, Buffer.from(JSON.stringify(payload)));
 };
 
-let t = setInterval(() => publish(TOPIC), 1000);
+let t = setInterval(() => publish(TOPIC), 10);
+let s = setInterval(() => publish(TOPIC), 10);
 
-console.log('mock funciton will end in 60 seconds');
+// console.log('mock funciton will end in 60 seconds');
 setTimeout(() => clearInterval(t), 60 * 1000);
+setTimeout(() => clearInterval(s), 60 * 1000);
