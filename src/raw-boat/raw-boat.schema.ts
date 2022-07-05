@@ -19,6 +19,16 @@ export class RawBoat {
     type: Date,
   })
   timestamp: Date;
+  @Prop()
+  motor_on: boolean; // status
+  @Prop()
+  mechanism_on: boolean; // status
+}
+
+export enum BoatStatus {
+  ACTIVE = 'active',
+  INACTIVE = 'inactive',
+  MOVING = 'moving',
 }
 
 export const RawBoatSchema = SchemaFactory.createForClass(RawBoat);

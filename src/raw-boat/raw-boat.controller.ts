@@ -13,19 +13,23 @@ export class RawBoatController {
     @Payload() data: RawBoat,
     @Ctx() context: MqttContext,
   ): void {
-    const id = context.getTopic().split('/')[1];
+    const boatId = context.getTopic().split('/')[1];
+
+    if (!boatId) throw Error('invalid boatid');
 
     this.rawBoatService.addOne({
-      boatId: id,
+      boatId,
       latitude: data.latitude,
       longtitude: data.longtitude,
       batteryLevel: data.batteryLevel,
       timestamp: data.timestamp,
+      mechanism_on: data.mechanism_on,
+      motor_on: data.motor_on,
     });
     console.log(
       `ping: ${
         Date.now() - (data.timestamp as unknown as number)
-      }ms | boatId: ${id} | Data ${JSON.stringify(data)}`,
+      }ms | boatId: ${boatId} | Data ${JSON.stringify(data)}`,
     );
   }
 }

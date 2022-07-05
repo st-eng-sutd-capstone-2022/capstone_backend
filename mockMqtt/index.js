@@ -18,14 +18,14 @@ const publish = (t) => {
     latitude: String(Math.random() * 350),
     longtitude: String(Math.random() * 60),
     batteryLevel: Math.random() * 100,
+    mechanism_on: true,
+    motor_on: true,
   };
 
   client.publish(t, Buffer.from(JSON.stringify(payload)));
 };
 
-let t = setInterval(() => publish(TOPIC), 10);
-let s = setInterval(() => publish(TOPIC), 10);
+let t = setInterval(() => publish(TOPIC), 1000);
 
 // console.log('mock funciton will end in 60 seconds');
 setTimeout(() => clearInterval(t), 60 * 1000);
-setTimeout(() => clearInterval(s), 60 * 1000);

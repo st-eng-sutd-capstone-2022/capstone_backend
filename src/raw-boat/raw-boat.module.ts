@@ -1,3 +1,4 @@
+import { Location, LocationSchema } from '@modules/location/location.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -11,6 +12,10 @@ import { RawBoatService } from './raw-boat.service';
       {
         name: RawBoat.name,
         schema: RawBoatSchema,
+      },
+      {
+        name: Location.name,
+        schema: LocationSchema,
       },
     ]),
   ],

@@ -9,30 +9,6 @@ import {
 
 import { BoatService } from './boat.service';
 
-const isInsideNPoly = (
-  noOfVertices: number,
-  vertx: number[],
-  verty: number[],
-  testx: number,
-  testy: number,
-): boolean => {
-  let i = 0;
-  let j = 0;
-  let c = false;
-
-  for (i = 0, j = noOfVertices - 1; i < noOfVertices; j = i++) {
-    if (
-      // within the y value
-      verty[i] > testy !== verty[j] > testy &&
-      testx <
-        ((vertx[j] - vertx[i]) * (testy - verty[i])) / (verty[j] - verty[i]) +
-          vertx[i]
-    )
-      c = !c; // flip the flag whenever the ray crosses an edge
-  }
-  return c;
-};
-
 @ApiHeader({
   name: 'Search',
   description: 'Handles all the assigning of new boats',
