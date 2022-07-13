@@ -10,6 +10,9 @@ import { StatusModule } from './status/status.module';
 import { BoatModule } from './boat/boat.module';
 import { LocationModule } from './location/location.module';
 import { AssignModule } from './assign/assign.module';
+import { WeightController } from './weight/weight.controller';
+import { WeightService } from './weight/weight.service';
+import { WeightModule } from './weight/weight.module';
 
 @Module({
   providers: [
@@ -30,6 +33,7 @@ import { AssignModule } from './assign/assign.module';
     BoatModule,
     LocationModule,
     AssignModule,
+    WeightModule,
   ],
 })
 export class AppModule {}
