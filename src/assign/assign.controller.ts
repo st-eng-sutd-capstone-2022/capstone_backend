@@ -22,11 +22,15 @@ import * as moment from 'moment';
 import { AssignDTO } from './assign.dto';
 import { Assign } from './assign.schema';
 import { AssignService } from './assign.service';
+import { WeightService } from '../weight/weight.service';
 
 @ApiTags('Assign')
 @Controller('assign')
 export class AssignController {
-  constructor(private readonly assignService: AssignService) {}
+  constructor(
+    private readonly assignService: AssignService,
+    private readonly weightService: WeightService,
+  ) {}
   @ApiCreatedResponse({
     description: 'New boat assigned successfully',
   })
@@ -40,6 +44,7 @@ export class AssignController {
         assignee: req.user.email, // TODO: check why user.name undefined
       };
       await this.assignService.createOne(assignBoat);
+      await this.weightService.createOne(req.body.boatId);
       return assignBoat;
     }
     return req.body;

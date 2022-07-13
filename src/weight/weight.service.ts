@@ -9,8 +9,13 @@ export class WeightService {
     @InjectModel(Weight.name) private weightModel: Model<WeightDocument>,
   ) {}
 
-  createOne(weight: Weight): Promise<Weight> {
-    // console.log(assign);
+  createOne(boatId: string): Promise<Weight> {
+    let weight = {
+      boatId,
+      timestamps: [],
+      weights: [],
+    };
+
     return this.weightModel.create(weight);
   }
 
