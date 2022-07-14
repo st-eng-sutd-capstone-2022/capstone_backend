@@ -23,6 +23,11 @@ export class RawBoat {
   motor_on: boolean; // status
   @Prop()
   mechanism_on: boolean; // status
+
+  @Prop()
+  location: string;
+  @Prop()
+  zone: string;
 }
 
 export enum BoatStatus {

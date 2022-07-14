@@ -1,5 +1,7 @@
 const mqtt = require('mqtt');
 
+const { generateFakeBoat } = require('../mocks/fakeBoatmovement');
+
 // const client = mqtt.connect('mqtt://localhost:6379');
 const client = mqtt.connect('mqtt://broker.hivemq.com:1883');
 const boatId = 'mock123';
@@ -12,15 +14,9 @@ client.on('message', function (topic, message) {
   console.log(`${i++} topic: ${topic}`, JSON.parse(message.toString()));
 });
 
+const fakeBoat = generateFakeBoat(boatId);
 const publish = (t) => {
-  const payload = {
-    timestamp: Date.now(),
-    latitude: String(Math.random() * 350),
-    longtitude: String(Math.random() * 60),
-    batteryLevel: Math.random() * 100,
-    mechanism_on: true,
-    motor_on: true,
-  };
+  const payload = fakeBoat.tick();
 
   client.publish(t, Buffer.from(JSON.stringify(payload)));
 };

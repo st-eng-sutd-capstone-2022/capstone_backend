@@ -1,4 +1,3 @@
-import { Zone } from '@modules/location/location.dto';
 import { Location, LocationDocument } from '@modules/location/location.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -51,7 +50,7 @@ export class RawBoatService {
     @InjectModel(Location.name) private locationModel: Model<LocationDocument>,
   ) {}
 
-  async addOne(payload: RawBoat) {
+  async addOne(payload: Omit<RawBoat, 'zone' | 'location'>) {
     const status =
       (payload.mechanism_on && BoatStatus.ACTIVE) ||
       (payload.motor_on && BoatStatus.MOVING) ||
@@ -70,8 +69,6 @@ export class RawBoatService {
         parseFloat(payload.longtitude),
       );
 
-      console.log('zones', insideZone);
-
       if (insideZone) {
         boatZone = zone.name;
         boatLocation = zone.location;
@@ -79,16 +76,6 @@ export class RawBoatService {
       return insideZone;
     });
 
-    console.log('send to BE', {
-      boatId: payload.boatId,
-      latitude: payload.latitude || null,
-      longtitude: payload.longtitude || null,
-      batteryLevel: payload.batteryLevel || -1,
-      timestamp: payload.timestamp || -1,
-      status,
-      zone: boatZone,
-      location: boatLocation,
-    });
     this.rawBoatModel.insertMany([
       {
         boatId: payload.boatId,
