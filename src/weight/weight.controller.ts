@@ -1,26 +1,8 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Param,
-  Request,
-  Body,
-  Res,
-  HttpStatus,
-  Delete,
-  NotFoundException,
-} from '@nestjs/common';
-import {
-  ApiCreatedResponse,
-  ApiHeader,
-  ApiOkResponse,
-  ApiParam,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Put, Param, Request, Body } from '@nestjs/common';
+import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import * as moment from 'moment';
+
 import { WeightDTO } from './weight.dto';
-import { Weight } from './weight.schema';
 import { WeightService } from './weight.service';
 
 @ApiTags('Weight')
@@ -41,8 +23,9 @@ export class WeightController {
     @Request() req,
   ): Promise<boolean> {
     // console.log(req.params);
-    let newWeight = req.body.newWeight;
-    let newTimestamp = moment().format();
+    const newWeight = req.body.newWeight;
+    const newTimestamp = moment().format();
+
     !!(await this.weightService.addWeight(boatId, newTimestamp, newWeight));
     return;
   }

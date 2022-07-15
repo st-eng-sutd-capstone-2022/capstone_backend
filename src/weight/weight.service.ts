@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Weight, WeightDocument } from './weight.schema';
 import { Model } from 'mongoose';
+
+import { Weight, WeightDocument } from './weight.schema';
 
 @Injectable()
 export class WeightService {
@@ -10,7 +11,7 @@ export class WeightService {
   ) {}
 
   createOne(boatId: string): Promise<Weight> {
-    let weight = {
+    const weight = {
       boatId,
       timestamps: [],
       weights: [],
@@ -32,6 +33,7 @@ export class WeightService {
           },
         },
       );
+
       return res.toObject();
     } catch (e) {
       throw e;
