@@ -34,8 +34,8 @@ const movementFactorySelatar = (initSeed = 0) => {
 const generateStatusFactory = () => {
   return () => {
     return {
-      mechanism_on: Math.random() > 0.5,
-      machine_on: Math.random() > 0.5,
+      mechanism_on: Math.random() > 0.2,
+      machine_on: Math.random() > 0.2,
     };
   };
 };
