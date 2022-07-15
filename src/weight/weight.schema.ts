@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { SchemaTypes, Types, Document } from 'mongoose';
+import { Document } from 'mongoose';
 
 export type WeightDocument = Weight & Document;
 
