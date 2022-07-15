@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { WeightController } from './weight.controller';
 import { Weight, WeightSchema } from './weight.schema';
 import { WeightService } from './weight.service';
@@ -15,5 +16,6 @@ import { WeightService } from './weight.service';
   ],
   controllers: [WeightController],
   providers: [WeightService],
+  exports: [WeightService],
 })
 export class WeightModule {}

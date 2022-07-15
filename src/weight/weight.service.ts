@@ -39,4 +39,18 @@ export class WeightService {
       throw e;
     }
   }
+
+  async getLastWeight(boatId: string): Promise<{
+    timestamp: Date;
+    weight: number;
+  }> {
+    const res = await this.weightModel.findOne({
+      boatId,
+    });
+
+    return {
+      weight: res.weights.pop() as number,
+      timestamp: res.timestamps.pop(),
+    };
+  }
 }

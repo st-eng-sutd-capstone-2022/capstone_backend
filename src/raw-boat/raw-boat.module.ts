@@ -21,5 +21,6 @@ import { RawBoatService } from './raw-boat.service';
   ],
   providers: [RawBoatService],
   controllers: [RawBoatController],
+  exports: [RawBoatService],
 })
 export class RawBoatModule {}

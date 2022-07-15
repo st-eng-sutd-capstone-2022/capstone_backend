@@ -23,6 +23,8 @@ export class RawBoat {
   motor_on: boolean; // status
   @Prop()
   mechanism_on: boolean; // status
+  @Prop()
+  status: string; //status
 
   @Prop()
   location: string;

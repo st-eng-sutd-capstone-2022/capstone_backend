@@ -22,5 +22,6 @@ import { AssignService } from './assign.service';
   ],
   controllers: [AssignController],
   providers: [AssignService, WeightService],
+  exports: [AssignService],
 })
 export class AssignModule {}

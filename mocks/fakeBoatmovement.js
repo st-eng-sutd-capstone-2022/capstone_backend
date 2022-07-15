@@ -35,7 +35,7 @@ const generateStatusFactory = () => {
   return () => {
     return {
       mechanism_on: Math.random() > 0.2,
-      machine_on: Math.random() > 0.2,
+      motor_on: Math.random() > 0.2,
     };
   };
 };
@@ -75,6 +75,12 @@ const generateFakeBoat = (boatId) => {
         batteryLevel,
         ...statuses,
         ...nextFakeLocation,
+        zone: '1',
+        location: 'selatar',
+        status:
+          (statuses.mechanism_on && 'active') ||
+          (statuses.motor_on && 'moving') ||
+          'inactive',
       };
     },
   };

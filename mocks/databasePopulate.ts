@@ -1,4 +1,3 @@
-import { Schema } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 
 import { generateFakeBoat } from './fakeBoatmovement';
@@ -26,7 +25,7 @@ const cleanRawBoat = async () => {
   await cleanRawBoat();
   console.log('====== FINISHED | removing existing rawboat data/n');
 
-  const boatIds = ['a1', 'b2', 'c3'];
+  const boatIds = ['test1', 'test2', 'test3'];
   const COUNT = (14 * 24 * 3600) / 10; // 14 days x 24 hours x data every 10 seconds
 
   const rawBoatData = [];

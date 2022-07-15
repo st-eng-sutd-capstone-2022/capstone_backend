@@ -1,5 +1,4 @@
-import { assignMetadata, Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { Module } from '@nestjs/common';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 
 import { AuthModule } from './auth/auth.module';
@@ -10,8 +9,6 @@ import { StatusModule } from './status/status.module';
 import { BoatModule } from './boat/boat.module';
 import { LocationModule } from './location/location.module';
 import { AssignModule } from './assign/assign.module';
-import { WeightController } from './weight/weight.controller';
-import { WeightService } from './weight/weight.service';
 import { WeightModule } from './weight/weight.module';
 
 @Module({

@@ -50,7 +50,7 @@ export class RawBoatService {
     @InjectModel(Location.name) private locationModel: Model<LocationDocument>,
   ) {}
 
-  async addOne(payload: Omit<RawBoat, 'zone' | 'location'>) {
+  async addOne(payload: Omit<RawBoat, 'zone' | 'location' | 'status'>) {
     const status =
       (payload.mechanism_on && BoatStatus.ACTIVE) ||
       (payload.motor_on && BoatStatus.MOVING) ||
@@ -88,5 +88,11 @@ export class RawBoatService {
         location: boatLocation,
       },
     ]);
+  }
+
+  async getLast(boatId: string) {
+    return (
+      await this.rawBoatModel.findOne({ boatId }).sort({ timestamp: -1 })
+    ).toObject();
   }
 }

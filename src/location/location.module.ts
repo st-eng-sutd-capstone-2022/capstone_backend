@@ -1,3 +1,6 @@
+import { AssignModule } from '@modules/assign/assign.module';
+import { RawBoatModule } from '@modules/raw-boat/raw-boat.module';
+import { WeightModule } from '@modules/weight/weight.module';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 
@@ -14,6 +17,9 @@ import { LocationService } from './location.service';
         schema: LocationSchema,
       },
     ]),
+    AssignModule,
+    WeightModule,
+    RawBoatModule,
   ],
   controllers: [LocationController],
 })
