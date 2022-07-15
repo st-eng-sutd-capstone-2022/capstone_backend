@@ -22,7 +22,6 @@ export class WeightController {
     @Body() _: WeightDTO,
     @Request() req,
   ): Promise<boolean> {
-    // console.log(req.params);
     const newWeight = req.body.newWeight;
     const newTimestamp = moment().format();
 

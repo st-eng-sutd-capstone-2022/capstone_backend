@@ -9,10 +9,15 @@ export class Weight extends Document {
   boatId: string;
 
   @Prop()
-  timestamps: Array<Date>;
+  timestamp: Date;
 
   @Prop()
-  weights: Array<Number>;
+  weight: number;
+
+  @Prop()
+  location: string;
+  @Prop()
+  zone: string;
 }
 
 export const WeightSchema = SchemaFactory.createForClass(Weight);

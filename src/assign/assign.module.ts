@@ -1,8 +1,9 @@
-import { WeightController } from '@modules/weight/weight.controller';
+import { RawBoatModule } from '@modules/raw-boat/raw-boat.module';
 import { Weight, WeightSchema } from '@modules/weight/weight.schema';
 import { WeightService } from '@modules/weight/weight.service';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+
 import { AssignController } from './assign.controller';
 import { Assign, AssignSchema } from './assign.schema';
 import { AssignService } from './assign.service';
@@ -19,6 +20,7 @@ import { AssignService } from './assign.service';
         schema: WeightSchema,
       },
     ]),
+    RawBoatModule,
   ],
   controllers: [AssignController],
   providers: [AssignService, WeightService],

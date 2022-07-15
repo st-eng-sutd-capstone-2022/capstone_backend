@@ -6,45 +6,40 @@ import {
   Param,
   Request,
   Body,
-  Res,
-  HttpStatus,
   Delete,
   NotFoundException,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
-  ApiHeader,
   ApiOkResponse,
   ApiParam,
   ApiTags,
 } from '@nestjs/swagger';
 import * as moment from 'moment';
+
 import { AssignDTO } from './assign.dto';
 import { Assign } from './assign.schema';
 import { AssignService } from './assign.service';
-import { WeightService } from '../weight/weight.service';
 
 @ApiTags('Assign')
 @Controller('assign')
 export class AssignController {
-  constructor(
-    private readonly assignService: AssignService,
-    private readonly weightService: WeightService,
-  ) {}
+  constructor(private readonly assignService: AssignService) {}
   @ApiCreatedResponse({
     description: 'New boat assigned successfully',
   })
   @Post()
   async create(@Body() _: AssignDTO, @Request() req): Promise<Assign> {
-    let datenow = moment().format('DD-MM-YYYY');
+    const datenow = moment().format('DD-MM-YYYY');
+
     if (req.body) {
-      let assignBoat = {
+      const assignBoat = {
         ...req.body,
         dateAssigned: datenow,
         assignee: req.user.email, // TODO: check why user.name undefined
       };
+
       await this.assignService.createOne(assignBoat);
-      await this.weightService.createOne(req.body.boatId);
       return assignBoat;
     }
     return req.body;
@@ -69,6 +64,7 @@ export class AssignController {
   public async findOne(@Param('boatId') boatId: string) {
     try {
       const assign = await this.assignService.findOneAssigned(boatId);
+
       // console.log(assign);
       return assign;
     } catch (e) {
@@ -90,12 +86,13 @@ export class AssignController {
     @Request() req,
   ): Promise<boolean> {
     // console.log(req.params);
-    let datenow = moment().format('DD-MM-YYYY');
-    let updatedAssign = {
+    const datenow = moment().format('DD-MM-YYYY');
+    const updatedAssign = {
       ...req.body,
       dateAssigned: datenow,
       assignee: req.user.email, // TODO: check why undefined
     };
+
     !!(await this.assignService.updateOneAssigned(id, updatedAssign));
     return;
   }
@@ -111,6 +108,7 @@ export class AssignController {
   public async deleteOneAssigned(@Param('boatId') boatId: string) {
     try {
       const assign = await this.assignService.deleteOneAssigned(boatId);
+
       !!assign;
       return;
     } catch (error) {

@@ -61,4 +61,19 @@ export class AssignService {
       throw e;
     }
   }
+
+  async isBoatExist(boatId: string): Promise<boolean> {
+    try {
+      const assign = await this.assignModel
+        .findOne({
+          boatId,
+        })
+        .exec();
+
+      return !!assign;
+    } catch (e) {
+      console.error(e);
+      return false;
+    }
+  }
 }

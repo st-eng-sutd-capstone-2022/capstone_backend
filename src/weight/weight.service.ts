@@ -1,3 +1,5 @@
+import { AssignService } from '@modules/assign/assign.service';
+import { RawBoatService } from '@modules/raw-boat/raw-boat.service';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -8,33 +10,25 @@ import { Weight, WeightDocument } from './weight.schema';
 export class WeightService {
   constructor(
     @InjectModel(Weight.name) private weightModel: Model<WeightDocument>,
+    private readonly assignService: AssignService,
+    private readonly rawDataService: RawBoatService,
   ) {}
 
-  createOne(boatId: string): Promise<Weight> {
-    const weight = {
-      boatId,
-      timestamps: [],
-      weights: [],
-    };
-
-    return this.weightModel.create(weight);
-  }
-
-  async addWeight(boatId, newTimestamp, newWeight): Promise<Weight> {
+  async addWeight(boatId, newTimestamp, newWeight) {
     try {
-      const res = await this.weightModel.findOneAndUpdate(
-        {
-          boatId,
-        },
-        {
-          $push: {
-            timestamps: newTimestamp,
-            weights: newWeight,
-          },
-        },
-      );
+      if (!(await this.assignService.isBoatExist(boatId))) {
+        throw Error('Boat does not exist');
+      }
 
-      return res.toObject();
+      const raw = await this.rawDataService.getLast(boatId);
+
+      return await this.weightModel.create({
+        boatId,
+        timestamp: newTimestamp,
+        weight: newWeight,
+        location: raw.location,
+        zone: raw.zone,
+      });
     } catch (e) {
       throw e;
     }
@@ -44,13 +38,12 @@ export class WeightService {
     timestamp: Date;
     weight: number;
   }> {
-    const res = await this.weightModel.findOne({
-      boatId,
-    });
+    const res = await this.weightModel
+      .findOne({
+        boatId,
+      })
+      .sort({ timestamp: -1 });
 
-    return {
-      weight: res.weights.pop() as number,
-      timestamp: res.timestamps.pop(),
-    };
+    return res?.toObject();
   }
 }
