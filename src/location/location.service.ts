@@ -51,9 +51,11 @@ export class LocationService {
       let res = { boatId };
       const weight = await this.weightService.getLastWeight(boatId);
 
-      res['weight'] = {};
-      res['weight'].kg = weight?.weight || -1;
-      res['weight'].lastUpdated = weight?.timestamp || -1;
+      if (weight) {
+        res['weight'] = {};
+        res['weight'].kg = weight.weight;
+        res['weight'].lastUpdated = weight.timestamp;
+      }
 
       const lastRaw = await this.rawDataService.getLast(boatId);
 

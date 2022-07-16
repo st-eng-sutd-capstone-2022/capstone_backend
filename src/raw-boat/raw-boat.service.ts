@@ -92,7 +92,9 @@ export class RawBoatService {
 
   async getLast(boatId: string) {
     return (
-      await this.rawBoatModel.findOne({ boatId }).sort({ timestamp: -1 })
-    ).toObject();
+      (
+        await this.rawBoatModel.findOne({ boatId }).sort({ timestamp: -1 })
+      )?.toObject() || null
+    );
   }
 }
