@@ -10,7 +10,7 @@ export class Assign extends Document {
   })
   serialNumber: string;
 
-  @Prop()
+  @Prop({ unique: true })
   boatId: string;
 
   @Prop()
