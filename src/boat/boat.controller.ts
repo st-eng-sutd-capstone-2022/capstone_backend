@@ -38,9 +38,16 @@ export class BoatController {
       zoneId: string;
       startTime: string;
       endTime: string;
+      log: string;
     },
   ) {
-    console.log(params);
+    if (params.log === 'true') {
+      return this.boatService.getActivityLog(
+        params.startTime,
+        params.endTime,
+        params.locationId,
+      );
+    }
     switch (params.type) {
       case 'overall':
         return this.boatService.getOverall(

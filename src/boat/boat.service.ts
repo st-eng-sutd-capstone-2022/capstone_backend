@@ -2,6 +2,7 @@ import { RawBoat, RawBoatDocument } from '@modules/raw-boat/raw-boat.schema';
 import { Weight, WeightDocument } from '@modules/weight/weight.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as moment from 'moment';
 import { Model } from 'mongoose';
 const DATA_COUNT_PER_DAY = (24 * 3600) / 10;
 
@@ -16,8 +17,8 @@ export class BoatService {
     const BASE_PIPELINE = {
       $match: {
         timestamp: {
-          $gte: new Date(start),
-          $lte: new Date(end),
+          $gte: moment(start).startOf('day').toDate(),
+          $lte: moment(end).endOf('day').toDate(),
         },
         location: location || null,
         ...(boatId ? { boatId } : {}),
@@ -156,19 +157,19 @@ export class BoatService {
           {
             label: 'Active',
             data: activityData.map(
-              (row) => (row.activeCount / DATA_COUNT_PER_DAY / 24) * 8,
+              (row) => (row.activeCount / DATA_COUNT_PER_DAY) * 24,
             ),
           },
           {
             label: 'Inactive',
             data: activityData.map(
-              (row) => (row.inactiveCount / DATA_COUNT_PER_DAY / 24) * 8,
+              (row) => (row.inactiveCount / DATA_COUNT_PER_DAY) * 24,
             ),
           },
           {
             label: 'Moving',
             data: activityData.map(
-              (row) => (row.movingCount / DATA_COUNT_PER_DAY / 24) * 8,
+              (row) => (row.movingCount / DATA_COUNT_PER_DAY) * 24,
             ),
           },
         ],
@@ -188,8 +189,8 @@ export class BoatService {
     const BASE_PIPELINE = {
       $match: {
         timestamp: {
-          $gte: new Date(start),
-          $lte: new Date(end),
+          $gte: moment(start).startOf('day').toDate(),
+          $lte: moment(end).endOf('day').toDate(),
         },
         location: location || null,
         zone,
@@ -282,5 +283,141 @@ export class BoatService {
 
   async getOverall(start, end, location) {
     return this.getByBoatId(start, end, location, null);
+  }
+
+  async getActivityLog(start, end, location) {
+    const BASE_PIPELINE = {
+      $match: {
+        timestamp: {
+          $gte: moment(start).startOf('day').toDate(),
+          $lte: moment(end).endOf('day').toDate(),
+        },
+        location: location || null,
+      },
+    };
+
+    const weightData = await this.weightModel.aggregate([
+      BASE_PIPELINE,
+      {
+        $group: {
+          _id: {
+            $concat: [
+              {
+                $dateToString: {
+                  format: '%m-%d-%Y %H:%M:%S',
+                  date: '$timestamp',
+                },
+              },
+              ' ',
+              '$boatId',
+            ],
+          },
+          location: {
+            $first: '$location',
+          },
+          boatId: { $first: '$boatId' },
+          date: {
+            $first: {
+              $dateToString: {
+                format: '%m-%d-%Y',
+                date: '$timestamp',
+              },
+            },
+          },
+          time: {
+            $first: {
+              $dateToString: {
+                format: '%H:%M:%S',
+                date: '$timestamp',
+              },
+            },
+          },
+          totalWeight: {
+            $sum: '$weight',
+          },
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $concat: ['$date', ' ', '$boatId'],
+          },
+          boatId: { $first: '$boatId' },
+          location: {
+            $first: '$location',
+          },
+          date: { $first: '$date' },
+          weights: { $push: '$totalWeight' },
+          time: { $push: '$time' },
+        },
+      },
+    ]);
+
+    const activityData = await this.rawBoatModel.aggregate([
+      BASE_PIPELINE,
+      {
+        $group: {
+          _id: {
+            $concat: [
+              {
+                $dateToString: {
+                  format: '%m-%d-%Y',
+                  date: '$timestamp',
+                },
+              },
+              '-',
+              '$boatId',
+            ],
+          },
+          boatId: { $first: '$boatId' },
+          date: {
+            $first: {
+              $dateToString: {
+                format: '%m-%d-%Y',
+                date: '$timestamp',
+              },
+            },
+          },
+          count: {
+            $sum: 1,
+          },
+          activeCount: {
+            $sum: {
+              $cond: [
+                {
+                  $eq: ['$status', 'active'],
+                },
+                1,
+                '$$REMOVE',
+              ],
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    const res = {};
+
+    for (const { boatId, date, activeCount } of activityData) {
+      if (!(boatId in res)) {
+        res[boatId] = { boatId, location, dateRange: {} };
+      }
+      res[boatId]['dateRange'][date] = {
+        date,
+        activeHours: (activeCount / DATA_COUNT_PER_DAY) * 24,
+        time:
+          weightData.find(({ _id }) => _id === `${date} ${boatId}`)?.time || [],
+        weight:
+          weightData.find(({ _id }) => _id === `${date} ${boatId}`)?.weights ||
+          [],
+      };
+    }
+
+    return res;
   }
 }
