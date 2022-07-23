@@ -1,3 +1,4 @@
+import { PublicEndpoint } from '@modules/publicEndpoint.decorator';
 import { Controller, Put, Param, Request, Body } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import * as moment from 'moment';
@@ -16,6 +17,7 @@ export class WeightController {
   @ApiOkResponse({
     description: 'Weight updated successfully',
   })
+  @PublicEndpoint()
   @Put(':boatId')
   async updateAssign(
     @Param() { boatId },
