@@ -1,11 +1,5 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
-import {
-  ApiHeader,
-  ApiOkResponse,
-  ApiParam,
-  ApiQuery,
-  ApiTags,
-} from '@nestjs/swagger';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiHeader, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { BoatService } from './boat.service';
 
@@ -20,8 +14,8 @@ export class BoatController {
 
   @ApiQuery({ name: 'type', example: 'overall' })
   @ApiQuery({ name: 'locationId', example: 'selatar' })
-  @ApiQuery({ name: 'boatId', example: 'test1' })
-  @ApiQuery({ name: 'zoneId', example: '1' })
+  @ApiQuery({ name: 'boatId', example: 'test1', required: false })
+  @ApiQuery({ name: 'zoneId', example: '1', required: false })
   @ApiQuery({ name: 'startTime', example: '2023-05-30T023:59:59.999Z' })
   @ApiQuery({ name: 'endTime', example: '2023-06-13T00:00:00.000Z' })
   @ApiQuery({ name: 'log', example: false })
