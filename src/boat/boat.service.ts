@@ -114,7 +114,7 @@ export class BoatService {
             byZone: [
               {
                 $group: {
-                  _id: { $concat: ['$location', '-', '$zone'] },
+                  _id: '$zone',
                   totalWeight: {
                     $sum: '$weight',
                   },
@@ -242,7 +242,7 @@ export class BoatService {
             byZone: [
               {
                 $group: {
-                  _id: { $concat: ['$location', '-', '$zone'] },
+                  _id: '$zone',
                   totalWeight: {
                     $sum: '$weight',
                   },
