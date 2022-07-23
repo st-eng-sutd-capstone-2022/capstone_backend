@@ -1,6 +1,7 @@
 import { User } from '@modules/user/user.schema';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import moment from 'moment';
 
 import { CreateUserDTO } from './auth.dto';
 
@@ -33,9 +34,25 @@ export class AuthService {
     type,
     employeeId,
     username,
-  }: User): Promise<{ access_token: string }> {
+  }: User): Promise<{ access_token: string; refresh_token: string }> {
     return {
-      access_token: this.jwtService.sign({ email, type, employeeId, username }),
+      access_token: this.jwtService.sign(
+        { email, type, employeeId, username },
+        {
+          expiresIn: '30d',
+        },
+      ),
+      refresh_token: this.jwtService.sign(
+        {
+          email,
+          type,
+          employeeId,
+          username,
+        },
+        {
+          expiresIn: '365d',
+        },
+      ),
     };
   }
 
@@ -47,6 +64,24 @@ export class AuthService {
       username,
       type: 'user',
     });
+  }
+
+  refresh(token: string) {
+    try {
+      const { email, type, employeeId, username } =
+        this.jwtService.verify(token);
+
+      return {
+        access_token: this.jwtService.sign(
+          { email, type, employeeId, username },
+          {
+            expiresIn: '30d',
+          },
+        ),
+      };
+    } catch (e) {
+      throw new Error('Refresh token is invalid');
+    }
   }
 
   logout() {

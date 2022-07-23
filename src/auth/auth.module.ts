@@ -17,9 +17,6 @@ import { LocalStrategy } from './local.strategy';
         console.log(configService.get('JWT_SECRET'));
         return {
           secret: configService.get('JWT_SECRET'),
-          signOptions: {
-            expiresIn: '365d',
-          },
         };
       },
     }),

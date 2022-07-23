@@ -56,9 +56,13 @@ export class AuthController {
   async login(
     @Body() _: LoginDTO,
     @Request() req,
-  ): Promise<Omit<User, 'password'> & { access_token: string }> {
+  ): Promise<
+    Omit<User, 'password'> & { access_token: string; refresh_token: string }
+  > {
     if (req.user) {
-      const { access_token } = await this.authService.login(req.user as User);
+      const { access_token, refresh_token } = await this.authService.login(
+        req.user as User,
+      );
 
       return {
         email: req.user.email,
@@ -66,6 +70,7 @@ export class AuthController {
         username: req.user.username,
         employeeId: req.user.employeeId,
         access_token,
+        refresh_token,
       };
     }
     return req.user;
@@ -114,10 +119,12 @@ export class AuthController {
     description: 'Get token by using refresh token',
     type: String,
   })
+  @ApiBody({
+    type: RefreshTokenDTO,
+  })
   @Post('refresh')
-  getToken(@Body() req: RefreshTokenDTO): string {
-    console.log(req.refreshToken);
-    return this.authService.logout();
+  getToken(@Body() req: RefreshTokenDTO) {
+    return this.authService.refresh(req.refresh_token);
   }
 
   @ApiBody({

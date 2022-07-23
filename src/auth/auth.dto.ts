@@ -46,7 +46,7 @@ export class ChangePasswordDTO {
 export class RefreshTokenDTO {
   @ApiProperty()
   @IsString()
-  refreshToken: string;
+  refresh_token: string;
 }
 
 export class LoginDTO {
