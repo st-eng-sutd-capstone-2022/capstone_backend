@@ -85,7 +85,7 @@ export class LocationController {
   }
 
   @ApiOkResponse({
-    description: 'Logged out succesfully',
+    description: 'liveboat data received',
   })
   @Get('liveboats')
   async findAllLiveboats() {

@@ -136,19 +136,26 @@ export class BoatService {
     return {
       activeHoursData: {
         labels,
-        datasets: activityData.map(
-          (row) => ((row.activeCount + row.movingCount) / row.count) * 24,
-        ),
-        batteryUsed: activityData.map((row) => {
-          // calculate the battery used for each day
-          return row.batteryLevel.reduce((used, level, idx) => {
-            if (idx === 0) {
-              return used;
-            }
-
-            return used + Math.max(0, row.batteryLevel[idx - 1] - level);
-          }, 0);
-        }),
+        datasets: [
+          {
+            label: 'ActiveHours',
+            data: activityData.map(
+              (row) => ((row.activeCount + row.movingCount) / row.count) * 24,
+            ),
+          },
+          {
+            label: 'BatteryUsed',
+            data: activityData.map((row) => {
+              // calculate the battery used for each day
+              return row.batteryLevel.reduce((used, level, idx) => {
+                if (idx === 0) {
+                  return used;
+                }
+                return used + Math.max(0, row.batteryLevel[idx - 1] - level);
+              }, 0);
+            }),
+          },
+        ],
       },
 
       activityLevelData: {
