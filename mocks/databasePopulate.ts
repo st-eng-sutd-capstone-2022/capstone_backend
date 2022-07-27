@@ -14,13 +14,7 @@ const cleanRawBoat = async () => {
   }
 };
 
-(async () => {
-  console.log('🥭 connecting mongoose');
-  await mongoose.connect(
-    'mongodb+srv://capstones36:capstones36@cluster0.a6elp.mongodb.net/?retryWrites=true&w=majority',
-  );
-  console.log('db connected');
-
+const rawDataFn = async () => {
   console.log('====== STARTED | removing existing rawboat data');
   await cleanRawBoat();
   console.log('====== FINISHED | removing existing rawboat data/n');
@@ -37,13 +31,20 @@ const cleanRawBoat = async () => {
       rawBoatData.push(fakeBoat.tick());
     }
   }
+  console.log(`====== STARTED | writing ${rawBoatData.length} rows of data`);
+  await rb.insertMany(rawBoatData);
+  console.log(`====== FINISHED | writing ${rawBoatData.length} rows of data/n`);
+};
+
+(async () => {
+  console.log('🥭 connecting mongoose');
+  await mongoose.connect(
+    'mongodb+srv://capstones36:capstones36@cluster0.a6elp.mongodb.net/?retryWrites=true&w=majority',
+  );
+  console.log('db connected');
 
   try {
-    console.log(`====== STARTED | writing ${rawBoatData.length} rows of data`);
-    await rb.insertMany(rawBoatData);
-    console.log(
-      `====== FINISHED | writing ${rawBoatData.length} rows of data/n`,
-    );
+    await rawDataFn();
   } catch (e) {
     console.error(e);
   } finally {
