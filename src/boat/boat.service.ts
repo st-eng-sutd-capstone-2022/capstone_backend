@@ -425,6 +425,6 @@ export class BoatService {
       };
     }
 
-    return res;
+    return Object.values(res);
   }
 }
