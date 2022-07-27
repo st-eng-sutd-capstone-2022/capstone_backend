@@ -76,7 +76,7 @@ const generateFakeBoat = (boatId) => {
         ...statuses,
         ...nextFakeLocation,
         zone: '1',
-        location: 'Selatar',
+        location: 'Seletar',
         status:
           (statuses.mechanism_on && 'active') ||
           (statuses.motor_on && 'moving') ||
