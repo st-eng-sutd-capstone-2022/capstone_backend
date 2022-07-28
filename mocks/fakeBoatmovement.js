@@ -43,7 +43,7 @@ const generateStatusFactory = () => {
 // (1.406616, 103.824547),(1.394224, 103.835658),(1.404991, 103.852552),(1.417875, 103.841781)
 
 const generateFakeBoat = (boatId) => {
-  const time = moment('20230531', 'YYYYMMDD');
+  const time = moment('20220714', 'YYYYMMDD');
 
   boatId = boatId || `FakeBoat - ${parseInt(Math.random() * 1000)}`;
 
