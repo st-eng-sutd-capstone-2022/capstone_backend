@@ -2,19 +2,20 @@ import mongoose from 'mongoose';
 
 import { generateFakeBoat } from './fakeBoatmovement';
 
+import { WeightSchema } from '../src/weight/weight.schema';
 import { RawBoatSchema } from '../src/raw-boat/raw-boat.schema';
 
 const rb = mongoose.model('rawboats', RawBoatSchema);
 
-const cleanRawBoat = async () => {
-  try {
-    console.log(await rb.deleteMany());
-  } catch (e) {
-    console.error(e);
-  }
-};
-
 const rawDataFn = async () => {
+  const cleanRawBoat = async () => {
+    try {
+      console.log(await rb.deleteMany());
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   console.log('====== STARTED | removing existing rawboat data');
   await cleanRawBoat();
   console.log('====== FINISHED | removing existing rawboat data/n');
@@ -36,6 +37,21 @@ const rawDataFn = async () => {
   console.log(`====== FINISHED | writing ${rawBoatData.length} rows of data/n`);
 };
 
+const weight = mongoose.model('weights', WeightSchema);
+
+const renameSelatarToSeletarForWeights = async () => {
+  console.log(
+    await weight.updateMany(
+      {
+        location: 'Selatar',
+      },
+      {
+        location: 'Seletar',
+      },
+    ),
+  );
+};
+
 (async () => {
   console.log('🥭 connecting mongoose');
   await mongoose.connect(
@@ -44,7 +60,8 @@ const rawDataFn = async () => {
   console.log('db connected');
 
   try {
-    await rawDataFn();
+    // await rawDataFn();
+    // await renameSelatarToSeletarForWeights();
   } catch (e) {
     console.error(e);
   } finally {
