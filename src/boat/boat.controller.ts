@@ -13,7 +13,7 @@ export class BoatController {
   constructor(private boatService: BoatService) {}
 
   @ApiQuery({ name: 'type', example: 'overall' })
-  @ApiQuery({ name: 'locationId', example: 'Selatar' })
+  @ApiQuery({ name: 'locationId', example: 'Seletar' })
   @ApiQuery({ name: 'boatId', example: 'test1', required: false })
   @ApiQuery({ name: 'zoneId', example: '1', required: false })
   @ApiQuery({ name: 'startTime', example: '2023-05-30T23:59:59.999Z' })

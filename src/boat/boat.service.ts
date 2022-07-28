@@ -414,7 +414,10 @@ export class BoatService {
       if (!(boatId in res)) {
         res[boatId] = { boatId, location, dateRange: {} };
       }
-      res[boatId]['dateRange'][date] = {
+      if (!Array.isArray(res[boatId]['dateRange'])) {
+        res[boatId]['dateRange'] = [];
+      }
+      res[boatId]['dateRange'].push({
         date,
         activeHours: (activeCount / DATA_COUNT_PER_DAY) * 24,
         time:
@@ -422,7 +425,7 @@ export class BoatService {
         weight:
           weightData.find(({ _id }) => _id === `${date} ${boatId}`)?.weights ||
           [],
-      };
+      });
     }
 
     return Object.values(res);

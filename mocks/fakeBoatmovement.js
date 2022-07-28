@@ -1,6 +1,6 @@
 const moment = require('moment');
 
-const movementFactorySelatar = (initSeed = 0) => {
+const movementFactorySeletar = (initSeed = 0) => {
   let seed = initSeed;
   const STEP = 0.01;
 
@@ -47,7 +47,7 @@ const generateFakeBoat = (boatId) => {
 
   boatId = boatId || `FakeBoat - ${parseInt(Math.random() * 1000)}`;
 
-  const generateMovement = movementFactorySelatar(0);
+  const generateMovement = movementFactorySeletar(0);
   const generateStatus = generateStatusFactory();
 
   // linear battery
