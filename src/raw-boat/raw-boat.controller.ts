@@ -9,15 +9,15 @@ export class RawBoatController {
   constructor(private readonly rawBoatService: RawBoatService) {}
 
   @EventPattern('telemetry_s36/+')
-  receiveRawTelemetry(
+  async receiveRawTelemetry(
     @Payload() data: RawBoat,
     @Ctx() context: MqttContext,
-  ): void {
+  ): Promise<void> {
     const boatId = context.getTopic().split('/')[1];
 
     if (!boatId) throw Error('invalid boatid');
 
-    this.rawBoatService.addOne({
+    await this.rawBoatService.addOne({
       boatId,
       latitude: data.latitude,
       longtitude: data.longtitude,
@@ -27,7 +27,7 @@ export class RawBoatController {
       motor_on: data.motor_on,
     });
     console.log(
-      `ping: ${
+      `boatId: ${boatId} | ping: ${
         Date.now() - (data.timestamp as unknown as number)
       }ms | boatId: ${boatId} | Data ${JSON.stringify(data)}`,
     );
