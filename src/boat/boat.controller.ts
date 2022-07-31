@@ -16,8 +16,8 @@ export class BoatController {
   @ApiQuery({ name: 'locationId', example: 'Seletar' })
   @ApiQuery({ name: 'boatId', example: 'test1', required: false })
   @ApiQuery({ name: 'zoneId', example: '1', required: false })
-  @ApiQuery({ name: 'startTime', example: '2023-05-30T23:59:59.999Z' })
-  @ApiQuery({ name: 'endTime', example: '2023-06-13T00:00:00.000Z' })
+  @ApiQuery({ name: 'startTime', example: '2022-07-31T23:59:59.999Z' })
+  @ApiQuery({ name: 'endTime', example: '2022-07-01T00:00:00.000Z' })
   @ApiQuery({ name: 'log', example: false })
   @ApiOkResponse({
     description: 'Boat details retrieved successfully',

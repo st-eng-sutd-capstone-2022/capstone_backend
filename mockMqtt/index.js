@@ -1,5 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const mqtt = require('mqtt');
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { generateFakeBoat } = require('../mocks/fakeBoatmovement');
 
 // const client = mqtt.connect('mqtt://localhost:6379');

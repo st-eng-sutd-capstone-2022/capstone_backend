@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const moment = require('moment');
 
 const movementFactorySeletar = (initSeed = 0) => {
@@ -31,43 +32,77 @@ const movementFactorySeletar = (initSeed = 0) => {
   };
 };
 
-const generateStatusFactory = () => {
+const generateStatusFactory = ({
+  percentageMechanismOn = 0.2,
+  percentageMotorOn = 0.2,
+}) => {
   return () => {
     return {
-      mechanism_on: Math.random() > 0.2,
-      motor_on: Math.random() > 0.2,
+      mechanism_on: Math.random() < percentageMechanismOn,
+      motor_on: Math.random() < percentageMotorOn,
     };
   };
 };
 
+const generateBatteryFactory = ({ multiplier = 1 }) => {
+  let batteryLevel = 100;
+  let batteryStep = 0.1;
+
+  return () => {
+    if (batteryLevel < 30 + 10 * Math.random()) {
+      batteryStep = 1; // Charging
+    } else if (batteryLevel >= 100) {
+      batteryStep = -0.1 * multiplier;
+    }
+    batteryLevel = batteryLevel + batteryStep;
+    return batteryLevel;
+  };
+};
 // (1.406616, 103.824547),(1.394224, 103.835658),(1.404991, 103.852552),(1.417875, 103.841781)
 
-const generateFakeBoat = (boatId) => {
-  const time = moment('20220714', 'YYYYMMDD');
+const generateFakeBoat = (
+  boatId = `FakeBoat - ${parseInt(Math.random() * 1000)}`,
+) => {
+  const time = moment('20220701', 'YYYYMMDD');
 
-  boatId = boatId || `FakeBoat - ${parseInt(Math.random() * 1000)}`;
+  const STATUS_MAP = {
+    test1: {
+      percentageMechanismOn: 0.2,
+      percentageMotorOn: 0.2,
+    },
+    test2: {
+      percentageMechanismOn: 0.8,
+      percentageMotorOn: 0.8,
+    },
+    test3: {
+      percentageMechanismOn: 0.4,
+      percentageMotorOn: 0.3,
+    },
+  };
 
-  const generateMovement = movementFactorySeletar(0);
-  const generateStatus = generateStatusFactory();
+  const BATTERY_MAP = {
+    test1: {
+      multiplier: 3,
+    },
+    test2: {
+      multiplier: 1,
+    },
+    test3: {
+      multiplier: 9,
+    },
+  };
 
-  // linear battery
-  let batteryLevel = 100;
-  let batteryStep = -0.1;
+  const generateMovement = movementFactorySeletar(Math.random() * 2 * Math.PI);
+  const generateStatus = generateStatusFactory(STATUS_MAP[boatId]);
+  const generateBatteryLevel = generateBatteryFactory(BATTERY_MAP[boatId]);
 
   return {
     tick: () => {
       const nextFakeLocation = generateMovement();
       const statuses = generateStatus();
+      const batteryLevel = generateBatteryLevel();
 
       time.add(10, 'seconds');
-
-      if (batteryLevel < 30 + 10 * Math.random()) {
-        batteryStep = 1;
-      } else if (batteryLevel >= 100) {
-        batteryStep = -0.1;
-      }
-
-      batteryLevel += batteryStep;
 
       return {
         boatId,

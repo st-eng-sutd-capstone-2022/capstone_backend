@@ -11,7 +11,7 @@ const rawDataFn = async () => {
   const cleanRawBoat = async () => {
     console.log('====== STARTED | removing existing rawboat data');
     try {
-      console.log(await rb.deleteMany());
+      console.log(await rb.collection.drop());
     } catch (e) {
       console.error(e);
     }
@@ -33,7 +33,10 @@ const rawDataFn = async () => {
       }
     }
     console.log(`====== STARTED | writing ${rawBoatData.length} rows of data`);
-    await rb.insertMany(rawBoatData);
+    await rb.insertMany(rawBoatData, {
+      ordered: false,
+      lean: true,
+    });
     console.log(
       `====== FINISHED | writing ${rawBoatData.length} rows of data/n`,
     );
@@ -58,6 +61,19 @@ const renameSelatarToSeletarForWeights = async () => {
   );
 };
 
+const changeZone6ToZone5 = async () => {
+  console.log(
+    await weight.updateMany(
+      {
+        zone: '6',
+      },
+      {
+        zone: '5',
+      },
+    ),
+  );
+};
+
 (async () => {
   console.log('🥭 connecting mongoose');
   await mongoose.connect(
@@ -67,7 +83,8 @@ const renameSelatarToSeletarForWeights = async () => {
 
   try {
     await rawDataFn();
-    // await renameSelatarToSeletarForWeights();
+    await renameSelatarToSeletarForWeights();
+    await changeZone6ToZone5();
   } catch (e) {
     console.error(e);
   } finally {
