@@ -200,7 +200,7 @@ export class BoatService {
           $lte: moment(end).endOf('day').toDate(),
         },
         location: location || null,
-        zone,
+        ...(zone === 'all' ? {} : { zone }),
       },
     };
 
