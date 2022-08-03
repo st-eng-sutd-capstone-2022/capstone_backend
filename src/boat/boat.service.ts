@@ -20,9 +20,6 @@ export class BoatService {
           $gte: moment(start).startOf('day').toDate(),
           $lte: moment(end).endOf('day').toDate(),
         },
-        $sort: {
-          timestamp: 1,
-        },
         location: location || null,
         ...(boatId ? { boatId } : {}),
       },
@@ -30,6 +27,11 @@ export class BoatService {
 
     const activityData = await this.rawBoatModel.aggregate([
       BASE_PIPELINE,
+      {
+        $sort: {
+          timestamp: 1,
+        },
+      },
       {
         $group: {
           _id: {
@@ -160,7 +162,6 @@ export class BoatService {
           },
         ],
       },
-
       activityLevelData: {
         labels,
         datasets: [
@@ -202,9 +203,7 @@ export class BoatService {
           $gte: moment(start).startOf('day').toDate(),
           $lte: moment(end).endOf('day').toDate(),
         },
-        $sort: {
-          timestamp: 1,
-        },
+
         location: location || null,
         ...(zone === 'all' ? {} : { zone }),
       },
@@ -213,6 +212,11 @@ export class BoatService {
     const weightData = (
       await this.weightModel.aggregate([
         BASE_PIPELINE,
+        {
+          $sort: {
+            timestamp: 1,
+          },
+        },
         {
           $facet: {
             groupedByZone: [
@@ -306,14 +310,16 @@ export class BoatService {
           $lte: moment(end).endOf('day').toDate(),
         },
         location: location || null,
-        $sort: {
-          timestamp: 1,
-        },
       },
     };
 
     const weightData = await this.weightModel.aggregate([
       BASE_PIPELINE,
+      {
+        $sort: {
+          timestamp: 1,
+        },
+      },
       {
         $group: {
           _id: {
