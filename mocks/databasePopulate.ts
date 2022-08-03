@@ -20,7 +20,16 @@ const rawDataFn = async () => {
   };
 
   const insertRawBoat = async () => {
-    const boatIds = ['test1', 'test2', 'test3'];
+    const boatIds = [
+      'Erica',
+      'Dody',
+      'Betty',
+      'Ally',
+      'Jack',
+      'Sam',
+      'Charlie',
+      'Bob',
+    ];
     const COUNT = (31 * 24 * 3600) / 10; // 31 days x 24 hours x data every 10 seconds
 
     const rawBoatData = [];

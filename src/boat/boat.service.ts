@@ -20,6 +20,9 @@ export class BoatService {
           $gte: moment(start).startOf('day').toDate(),
           $lte: moment(end).endOf('day').toDate(),
         },
+        $sort: {
+          timestamp: 1,
+        },
         location: location || null,
         ...(boatId ? { boatId } : {}),
       },
@@ -31,7 +34,7 @@ export class BoatService {
         $group: {
           _id: {
             $dateToString: {
-              format: '%m-%d-%Y',
+              format: '%d-%m-%Y',
               date: '$timestamp',
             },
           },
@@ -96,7 +99,7 @@ export class BoatService {
                 $group: {
                   _id: {
                     $dateToString: {
-                      format: '%m-%d-%Y',
+                      format: '%d-%m-%Y',
                       date: '$timestamp',
                     },
                   },
@@ -199,6 +202,9 @@ export class BoatService {
           $gte: moment(start).startOf('day').toDate(),
           $lte: moment(end).endOf('day').toDate(),
         },
+        $sort: {
+          timestamp: 1,
+        },
         location: location || null,
         ...(zone === 'all' ? {} : { zone }),
       },
@@ -216,7 +222,7 @@ export class BoatService {
                     $concat: [
                       {
                         $dateToString: {
-                          format: '%m-%d-%Y',
+                          format: '%d-%m-%Y',
                           date: '$timestamp',
                         },
                       },
@@ -227,7 +233,7 @@ export class BoatService {
                   timestamp: {
                     $first: {
                       $dateToString: {
-                        format: '%m-%d-%Y',
+                        format: '%d-%m-%Y',
                         date: '$timestamp',
                       },
                     },
@@ -300,6 +306,9 @@ export class BoatService {
           $lte: moment(end).endOf('day').toDate(),
         },
         location: location || null,
+        $sort: {
+          timestamp: 1,
+        },
       },
     };
 
@@ -311,7 +320,7 @@ export class BoatService {
             $concat: [
               {
                 $dateToString: {
-                  format: '%m-%d-%Y %H:%M:%S',
+                  format: '%d-%m-%Y %H:%M:%S',
                   date: '$timestamp',
                 },
               },
@@ -326,7 +335,7 @@ export class BoatService {
           date: {
             $first: {
               $dateToString: {
-                format: '%m-%d-%Y',
+                format: '%d-%m-%Y',
                 date: '$timestamp',
               },
             },
@@ -368,7 +377,7 @@ export class BoatService {
             $concat: [
               {
                 $dateToString: {
-                  format: '%m-%d-%Y',
+                  format: '%d-%m-%Y',
                   date: '$timestamp',
                 },
               },
@@ -380,7 +389,7 @@ export class BoatService {
           date: {
             $first: {
               $dateToString: {
-                format: '%m-%d-%Y',
+                format: '%d-%m-%Y',
                 date: '$timestamp',
               },
             },
