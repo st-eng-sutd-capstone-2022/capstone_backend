@@ -8,6 +8,17 @@ import { RawBoatSchema } from '../src/raw-boat/raw-boat.schema';
 const rb = mongoose.model('rawboats', RawBoatSchema);
 
 const rawDataFn = async () => {
+  const boatIds = [
+    'Erica',
+    'Dody',
+    'Betty',
+    'Ally',
+    'Jack',
+    'Sam',
+    'Charlie',
+    'Bob',
+  ];
+
   const cleanRawBoat = async () => {
     console.log('====== STARTED | removing existing rawboat data');
     try {
@@ -19,40 +30,34 @@ const rawDataFn = async () => {
     console.log('====== FINISHED | removing existing rawboat data/n');
   };
 
-  const insertRawBoat = async () => {
-    const boatIds = [
-      'Erica',
-      'Dody',
-      'Betty',
-      'Ally',
-      'Jack',
-      'Sam',
-      'Charlie',
-      'Bob',
-    ];
-    const COUNT = (31 * 24 * 3600) / 10; // 31 days x 24 hours x data every 10 seconds
+  await cleanRawBoat();
 
-    const rawBoatData = [];
+  for (const boatId of boatIds) {
+    const insertRawBoat = async () => {
+      const COUNT = (31 * 24 * 3600) / 10; // 31 days x 24 hours x data every 10 seconds
 
-    for (const boatId of boatIds) {
+      const rawBoatData = [];
+
       const fakeBoat = generateFakeBoat(boatId);
 
       for (let i = 0; i < COUNT; i++) {
         rawBoatData.push(fakeBoat.tick());
       }
-    }
-    console.log(`====== STARTED | writing ${rawBoatData.length} rows of data`);
-    await rb.insertMany(rawBoatData, {
-      ordered: false,
-      lean: true,
-    });
-    console.log(
-      `====== FINISHED | writing ${rawBoatData.length} rows of data/n`,
-    );
-  };
 
-  await cleanRawBoat();
-  await insertRawBoat();
+      console.log(
+        `====== STARTED | writing ${rawBoatData.length} rows of data | boat ${boatId}`,
+      );
+      await rb.insertMany(rawBoatData, {
+        ordered: false,
+        lean: true,
+      });
+      console.log(
+        `====== FINISHED | writing ${rawBoatData.length} rows of data | boat ${boatId}/n`,
+      );
+    };
+
+    await insertRawBoat();
+  }
 };
 
 const weight = mongoose.model('weights', WeightSchema);
