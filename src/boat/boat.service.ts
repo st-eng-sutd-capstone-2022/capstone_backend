@@ -28,11 +28,6 @@ export class BoatService {
     const activityData = await this.rawBoatModel.aggregate([
       BASE_PIPELINE,
       {
-        $sort: {
-          timestamp: 1,
-        },
-      },
-      {
         $group: {
           _id: {
             $dateToString: {
@@ -213,11 +208,6 @@ export class BoatService {
       await this.weightModel.aggregate([
         BASE_PIPELINE,
         {
-          $sort: {
-            timestamp: 1,
-          },
-        },
-        {
           $facet: {
             groupedByZone: [
               {
@@ -316,11 +306,6 @@ export class BoatService {
     const weightData = await this.weightModel.aggregate([
       BASE_PIPELINE,
       {
-        $sort: {
-          timestamp: 1,
-        },
-      },
-      {
         $group: {
           _id: {
             $concat: [
@@ -357,6 +342,11 @@ export class BoatService {
           totalWeight: {
             $sum: '$weight',
           },
+        },
+      },
+      {
+        $sort: {
+          time: 1,
         },
       },
       {
