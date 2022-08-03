@@ -66,29 +66,64 @@ const generateFakeBoat = (
   const time = moment('20220701', 'YYYYMMDD');
 
   const STATUS_MAP = {
-    test1: {
+    Erica: {
       percentageMechanismOn: 0.2,
       percentageMotorOn: 0.2,
     },
-    test2: {
+    Betty: {
       percentageMechanismOn: 0.8,
       percentageMotorOn: 0.8,
     },
-    test3: {
+    Dody: {
+      percentageMechanismOn: 0.4,
+      percentageMotorOn: 0.3,
+    },
+    Ally: {
+      percentageMechanismOn: 0.2,
+      percentageMotorOn: 0.2,
+    },
+    Jack: {
+      percentageMechanismOn: 0.8,
+      percentageMotorOn: 0.8,
+    },
+    Sam: {
+      percentageMechanismOn: 0.4,
+      percentageMotorOn: 0.3,
+    },
+    Charlie: {
+      percentageMechanismOn: 0.8,
+      percentageMotorOn: 0.8,
+    },
+    Bob: {
       percentageMechanismOn: 0.4,
       percentageMotorOn: 0.3,
     },
   };
 
   const BATTERY_MAP = {
-    test1: {
+    Erica: {
       multiplier: 3,
     },
-    test2: {
+    Dody: {
       multiplier: 1,
     },
-    test3: {
+    Betty: {
       multiplier: 9,
+    },
+    Ally: {
+      multiplier: 3,
+    },
+    Jack: {
+      multiplier: 1,
+    },
+    Sam: {
+      multiplier: 9,
+    },
+    Charlie: {
+      multiplier: 3,
+    },
+    Bob: {
+      multiplier: 1,
     },
   };
 
