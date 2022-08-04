@@ -71,9 +71,6 @@ export class BoatService {
               ],
             },
           },
-          status: {
-            $push: '$status',
-          },
           batteryLevel: {
             $push: '$batteryLevel',
           },
