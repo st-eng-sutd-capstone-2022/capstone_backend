@@ -78,7 +78,7 @@ export class BoatService {
       },
       {
         $sort: {
-          _id: 1,
+          _id: -1,
         },
       },
     ]);
@@ -104,7 +104,7 @@ export class BoatService {
               },
               {
                 $sort: {
-                  _id: 1,
+                  _id: -1,
                 },
               },
             ],
@@ -239,7 +239,7 @@ export class BoatService {
               },
               {
                 $sort: {
-                  _id: 1,
+                  _id: -1,
                 },
               },
             ],
