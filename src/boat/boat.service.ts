@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import * as moment from 'moment';
 import { Model } from 'mongoose';
-const DATA_COUNT_PER_DAY = (24 * 3600) / 10;
+const DATA_COUNT_PER_DAY = (24 * 3600) / 30;
 
 @Injectable()
 export class BoatService {

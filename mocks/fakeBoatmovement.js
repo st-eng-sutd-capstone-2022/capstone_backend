@@ -132,12 +132,12 @@ const generateFakeBoat = (
   const generateBatteryLevel = generateBatteryFactory(BATTERY_MAP[boatId]);
 
   return {
-    tick: () => {
+    tick: (seconds = 10) => {
       const nextFakeLocation = generateMovement();
       const statuses = generateStatus();
       const batteryLevel = generateBatteryLevel();
 
-      time.add(10, 'seconds');
+      time.add(seconds, 'seconds');
 
       return {
         boatId,

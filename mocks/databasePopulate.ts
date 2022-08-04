@@ -32,16 +32,18 @@ const rawDataFn = async () => {
 
   await cleanRawBoat();
 
+  const promises = [];
+
   for (const boatId of boatIds) {
     const insertRawBoat = async () => {
-      const COUNT = (31 * 24 * 3600) / 10; // 31 days x 24 hours x data every 10 seconds
+      const COUNT = (31 * 24 * 3600) / 30; // 31 days x 24 hours x data every 30 seconds
 
       const rawBoatData = [];
 
       const fakeBoat = generateFakeBoat(boatId);
 
       for (let i = 0; i < COUNT; i++) {
-        rawBoatData.push(fakeBoat.tick());
+        rawBoatData.push(fakeBoat.tick(30));
       }
 
       console.log(
@@ -56,8 +58,10 @@ const rawDataFn = async () => {
       );
     };
 
-    await insertRawBoat();
+    promises.push(insertRawBoat());
   }
+
+  await Promise.all(promises);
 };
 
 const weight = mongoose.model('weights', WeightSchema);
